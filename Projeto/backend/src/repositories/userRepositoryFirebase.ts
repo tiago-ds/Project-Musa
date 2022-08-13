@@ -13,8 +13,8 @@ export class UserRepositoryFirebase implements UserRepositoryInterface {
 		return true;
 		//return this.firebaseApi.save(user);
 	}
-	getUser(userUuid: string): any {
-		return this.firebaseApi.get(userUuid);
+	async getUser(userUuid: string): Promise<any> {
+		return await this.firebaseApi.get(userUuid);
 	}
 	updateUser(user: User): any {
 		return {};

@@ -8,8 +8,8 @@ export default class UserCollection {
 	// createUser(user: User): void {
 	// 	res.json({ message: 'response' });
 	// }
-	getUser(userId: string): void {
-		this.userRepository.getUser(userId);
+	async getUser(userId: string): Promise<any> {
+		return await this.userRepository.getUser(userId);
 	}
 	// getUsers(req: Request, res: Response, next: NextFunction): void {
 	// 	res.json({ message: 'response' });

@@ -11,10 +11,14 @@ export default class UserController {
 	createUser(req: Request, res: Response, next: NextFunction): void {
 		res.json({ message: 'response' });
 	}
-	getUser(req: Request, res: Response, next: NextFunction): void {
+	async getUser(
+		req: Request,
+		res: Response,
+		next: NextFunction
+	): Promise<any> {
 		console.log(this);
 
-		const response = this.facade.handleRequest(req);
+		const response = await this.facade.handleRequest(req);
 		res.json(response);
 	}
 	getUsers(req: Request, res: Response, next: NextFunction): void {

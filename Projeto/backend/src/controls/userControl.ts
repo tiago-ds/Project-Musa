@@ -7,12 +7,12 @@ export default class UserControl {
 		this.userCollection = new UserCollection();
 	}
 
-	handleUserRequest(request: Request) {
+	async handleUserRequest(request: Request) {
 		if (request.method === 'GET') {
 			if (request.route.path === '/user') {
 				return this.userCollection.getUser(request.params.id);
 			} else if (request.route.path === '/user/:id') {
-				return this.userCollection.getUser(request.params.id);
+				return await this.userCollection.getUser(request.params.id);
 			}
 		}
 		// } else if(request.method === 'GET') {

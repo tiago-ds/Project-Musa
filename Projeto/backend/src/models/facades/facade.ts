@@ -2,9 +2,9 @@ import { Request } from 'express';
 import UserControl from '../../controls/userControl';
 
 export default class Facade {
-	handleRequest(request: Request) {
+	async handleRequest(request: Request) {
 		if (request.route.path.match(/\/user\/.*/)) {
-			return new UserControl().handleUserRequest(request);
+			return await new UserControl().handleUserRequest(request);
 		}
 	}
 }
