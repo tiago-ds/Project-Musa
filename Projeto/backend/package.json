@@ -7,12 +7,16 @@
     "build": "tsc",
     "start": "npm run build && node .",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "ts-node-dev --ignore-watch node_modules src/index.ts"
+    "watch": "nodemon --watch src src/endpoints.ts"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "ts-node": "^9.1.1",
+    "@swc/core": "^1.2.231",
+    "@swc/helpers": "^0.4.6",
+    "nodemon": "^2.0.19",
+    "regenerator-runtime": "^0.13.9",
+    "ts-node": "^10.9.1",
     "ts-node-dev": "^1.1.6"
   },
   "dependencies": {
