@@ -1,5 +1,7 @@
 import { NextFunction, Response, Request } from 'express';
 import Facade from '../models/facades/facade';
+import { MusaResponse } from '../models/Response';
+import { User } from '../models/User';
 
 export default class UserController {
 	facade: Facade;
@@ -9,25 +11,30 @@ export default class UserController {
 	}
 
 	createUser(req: Request, res: Response, next: NextFunction): void {
-		res.json({ message: 'response' });
+		this.facade.handleRequest(req).then((response: MusaResponse<User>) => {
+			res.status(response.statusCode).json(response);
+		});
 	}
-	async getUser(
-		req: Request,
-		res: Response,
-		next: NextFunction
-	): Promise<any> {
-		console.log(this);
+	getUser(req: Request, res: Response, next: NextFunction): void {
+		this.facade.handleRequest(req).then((response: MusaResponse<User>) => {
+			res.status(response.statusCode).json(response);
+		});
+	}
 
-		const response = await this.facade.handleRequest(req);
-		res.json(response);
-	}
 	getUsers(req: Request, res: Response, next: NextFunction): void {
-		res.json({ message: 'response' });
+		this.facade.handleRequest(req).then((users: User[]) => {
+			res.json(users);
+		});
 	}
 	updateUser(req: Request, res: Response, next: NextFunction): void {
-		res.json({ message: 'response' });
+		this.facade.handleRequest(req).then((user: User) => {
+			res.json(user);
+		});
 	}
+
 	deleteUser(req: Request, res: Response, next: NextFunction): void {
-		res.json({ message: 'response' });
+		this.facade.handleRequest(req).then((user: User) => {
+			res.json(user);
+		});
 	}
 }

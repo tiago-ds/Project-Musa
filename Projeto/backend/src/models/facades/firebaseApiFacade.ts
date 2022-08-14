@@ -27,16 +27,27 @@ export class FirebaseApiFacade<T> implements DatabaseCommunicationInterface {
 	}
 
 	async save(object: T, id: string): Promise<boolean> {
-		await this.objectRef.doc(id).set(object);
-		return true;
+		return (await await this.objectRef.doc(id).set(object)) != null;
 	}
 	async get(id: string): Promise<Object> {
 		return await (await this.objectRef.doc(id).get()).data();
 	}
-	update(object: Object): Object {
-		throw new Error('Method not implemented.');
+
+	async getAllFiltered(
+		field: string,
+		list: Array<string | number>
+	): Promise<Array<Object>> {
+		return await (
+			await this.objectRef.where(field, 'in', list).get()
+		).docs.map((doc) => doc.data());
 	}
-	delete(id: string): Object {
-		throw new Error('Method not implemented.');
+
+	async update(id: string, partialUser: any): Promise<boolean> {
+		console.log('update', id, partialUser);
+
+		return (await this.objectRef.doc(id).update(partialUser)) != null;
+	}
+	async delete(id: string): Promise<boolean> {
+		return (await this.objectRef.doc(id).delete()) != null;
 	}
 }

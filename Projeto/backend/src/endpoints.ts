@@ -5,6 +5,7 @@ import dotevn from 'dotenv';
 dotevn.config();
 
 const app = express();
+app.use(express.json());
 
 const userRoutes = new UserRoutes(app);
 

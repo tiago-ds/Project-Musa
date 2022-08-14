@@ -1,3 +1,4 @@
+import { User } from '../models/User';
 import { UserRepositoryFirebase } from '../repositories/userRepositoryFirebase';
 
 export default class UserCollection {
@@ -5,19 +6,19 @@ export default class UserCollection {
 	constructor() {
 		this.userRepository = new UserRepositoryFirebase();
 	}
-	// createUser(user: User): void {
-	// 	res.json({ message: 'response' });
-	// }
-	async getUser(userId: string): Promise<any> {
+	async createUser(user: User): Promise<boolean> {
+		return await this.userRepository.createUser(user);
+	}
+	async getUser(userId: string): Promise<Object> {
 		return await this.userRepository.getUser(userId);
 	}
-	// getUsers(req: Request, res: Response, next: NextFunction): void {
-	// 	res.json({ message: 'response' });
-	// }
-	// updateUser(req: Request, res: Response, next: NextFunction): void {
-	// 	res.json({ message: 'response' });
-	// }
-	// deleteUser(req: Request, res: Response, next: NextFunction): void {
-	// 	res.json({ message: 'response' });
-	// }
+	async getUsers(userIdList: Array<string>): Promise<Object> {
+		return await this.userRepository.getUsers(userIdList);
+	}
+	async updateUser(userId: string, user: any): Promise<boolean> {
+		return await this.userRepository.updateUser(userId, user);
+	}
+	async deleteUser(userId: string): Promise<boolean> {
+		return await this.userRepository.deleteUser(userId);
+	}
 }

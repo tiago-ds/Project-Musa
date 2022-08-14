@@ -6,20 +6,23 @@ export class UserRepositoryFirebase implements UserRepositoryInterface {
 	private readonly firebaseApi: FirebaseApiFacade<User>;
 
 	constructor() {
+		console.log('UserRepositoryFirebase');
 		this.firebaseApi = new FirebaseApiFacade<User>('users');
 	}
 
-	createUser(user: User): boolean {
-		return true;
-		//return this.firebaseApi.save(user);
+	async getUsers(userIdList: string[]): Promise<Object[]> {
+		return this.firebaseApi.getAllFiltered('id', userIdList);
 	}
-	async getUser(userUuid: string): Promise<any> {
-		return await this.firebaseApi.get(userUuid);
+	async createUser(user: User): Promise<boolean> {
+		return this.firebaseApi.save(user, user.id);
 	}
-	updateUser(user: User): any {
-		return {};
+	async getUser(userId: string): Promise<Object> {
+		return await this.firebaseApi.get(userId);
 	}
-	deleteUser(userUuid: string): boolean {
-		return true;
+	async updateUser(userId: string, user: User): Promise<boolean> {
+		return await this.firebaseApi.update(userId, user);
+	}
+	async deleteUser(userId: string): Promise<boolean> {
+		return await this.firebaseApi.delete(userId);
 	}
 }
