@@ -1,7 +1,8 @@
-import express, { Express } from 'express';
+import { Express } from 'express';
 import UserController from '../controllers/userController';
+import IRoutes from '../interfaces/routesInterface';
 
-export default class UserRoutes {
+export default class UserRoutes implements IRoutes {
 	app: Express;
 	baseRoute: string;
 	userController: UserController;
@@ -20,10 +21,10 @@ export default class UserRoutes {
 		this.app.get(`/${this.baseRoute}/:id`, (req, res, next) =>
 			this.userController.getUser(req, res, next)
 		);
-		this.app.post(`/${this.baseRoute}/:id`, (req, res, next) =>
+		this.app.post(`/${this.baseRoute}`, (req, res, next) =>
 			this.userController.createUser(req, res, next)
 		);
-		this.app.put(`/${this.baseRoute}/:id`, (req, res, next) =>
+		this.app.patch(`/${this.baseRoute}/:id`, (req, res, next) =>
 			this.userController.updateUser(req, res, next)
 		);
 		this.app.delete(`/${this.baseRoute}/:id`, (req, res, next) =>
