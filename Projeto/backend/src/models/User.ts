@@ -1,3 +1,4 @@
+import { ChallengeData } from './ChallengeData';
 import { UserData } from './UserData';
 
 export interface User {
@@ -5,6 +6,6 @@ export interface User {
 	name: string;
 	email: string;
 	profilePictureUrl: string;
-	lastChallenges: Array<string>;
+	lastChallenges: Array<ChallengeData>;
 	friends: Array<UserData>;
 }
