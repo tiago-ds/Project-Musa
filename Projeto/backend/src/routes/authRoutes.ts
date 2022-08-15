@@ -1,0 +1,29 @@
+import { Express } from 'express';
+import AuthController from '../controllers/authController';
+import UserController from '../controllers/userController';
+import IRoutes from '../interfaces/routesInterface';
+
+export default class AuthRoutes implements IRoutes {
+	app: Express;
+	baseRoute: string;
+	authController: AuthController;
+
+	constructor(app: Express) {
+		this.app = app;
+		this.baseRoute = 'auth';
+		this.authController = new AuthController();
+		this.initializeRoutes();
+	}
+
+	initializeRoutes() {
+		this.app.get(`/${this.baseRoute}/auth_url`, (req, res, next) =>
+			this.authController.handleRequest(req, res, next)
+		);
+		this.app.post(`/${this.baseRoute}/credentials`, (req, res, next) =>
+			this.authController.handleRequest(req, res, next)
+		);
+		this.app.post(`/${this.baseRoute}/refresh_token`, (req, res, next) =>
+			this.authController.handleRequest(req, res, next)
+		);
+	}
+}
