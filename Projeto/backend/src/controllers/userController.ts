@@ -10,31 +10,9 @@ export default class UserController {
 		this.facade = new Facade();
 	}
 
-	createUser(req: Request, res: Response, next: NextFunction): void {
+	handleRequest(req: Request, res: Response, next: NextFunction): void {
 		this.facade.handleRequest(req).then((response: MusaResponse<User>) => {
 			res.status(response.statusCode).json(response);
-		});
-	}
-	getUser(req: Request, res: Response, next: NextFunction): void {
-		this.facade.handleRequest(req).then((response: MusaResponse<User>) => {
-			res.status(response.statusCode).json(response);
-		});
-	}
-
-	getUsers(req: Request, res: Response, next: NextFunction): void {
-		this.facade.handleRequest(req).then((users: User[]) => {
-			res.json(users);
-		});
-	}
-	updateUser(req: Request, res: Response, next: NextFunction): void {
-		this.facade.handleRequest(req).then((user: User) => {
-			res.json(user);
-		});
-	}
-
-	deleteUser(req: Request, res: Response, next: NextFunction): void {
-		this.facade.handleRequest(req).then((user: User) => {
-			res.json(user);
 		});
 	}
 }

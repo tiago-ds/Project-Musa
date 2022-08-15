@@ -43,8 +43,6 @@ export class FirebaseApiFacade<T> implements DatabaseCommunicationInterface {
 	}
 
 	async update(id: string, partialUser: any): Promise<boolean> {
-		console.log('update', id, partialUser);
-
 		return (await this.objectRef.doc(id).update(partialUser)) != null;
 	}
 	async delete(id: string): Promise<boolean> {
