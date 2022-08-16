@@ -105,7 +105,7 @@ export default class AuthControl {
 
 			if (userCreated) {
 				return {
-					data: userCreated,
+					data: loginResponse.body.id,
 					statusCode: 200,
 				};
 			} else {
