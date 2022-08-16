@@ -1,9 +1,10 @@
 import SpotifyWebApi from 'spotify-web-api-node';
 import {
-	Response,
+	AuthorizationResponse,
 	AuthorizationCodeGrantResponse,
-} from '../../interfaces/authCodeGrantResponse';
-import { IMusicStreamingComunication } from '../../interfaces/musicStreamingComunication';
+	RefreshAccessTokenResponse,
+} from '../interfaces/authCodeGrantResponse';
+import { IMusicStreamingComunication } from '../interfaces/musicStreamingComunication';
 
 export default class SpotifyApiFacade implements IMusicStreamingComunication {
 	spotifyApi: SpotifyWebApi;
@@ -23,22 +24,33 @@ export default class SpotifyApiFacade implements IMusicStreamingComunication {
 		];
 	}
 
-	getAuthorizeUrl(): string {
+	getAuthorizeUrl(redirectUri: string): string {
+		this.spotifyApi.setRedirectURI(redirectUri);
 		return this.spotifyApi.createAuthorizeURL(this.scopes, '');
+		this.spotifyApi.getMe();
 	}
 
 	async getInitialCredentials(
 		code: string
-	): Promise<Response<AuthorizationCodeGrantResponse>> {
+	): Promise<AuthorizationResponse<AuthorizationCodeGrantResponse>> {
 		return await this.spotifyApi.authorizationCodeGrant(code);
 	}
 
 	async refreshAccessToken(
 		accessToken: string,
 		refreshToken: string
-	): Promise<any> {
+	): Promise<AuthorizationResponse<RefreshAccessTokenResponse>> {
 		this.spotifyApi.setAccessToken(accessToken);
 		this.spotifyApi.setRefreshToken(refreshToken);
 		return await this.spotifyApi.refreshAccessToken();
+	}
+
+	async getProfileInfo(
+		accessToken: string,
+		refreshToken: string
+	): Promise<any> {
+		this.spotifyApi.setAccessToken(accessToken);
+		this.spotifyApi.setRefreshToken(refreshToken);
+		return await this.spotifyApi.getMe();
 	}
 }

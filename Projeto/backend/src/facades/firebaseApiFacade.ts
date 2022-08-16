@@ -1,4 +1,4 @@
-import { DatabaseCommunicationInterface } from '../../interfaces/databaseCommunicationInterface';
+import { DatabaseCommunicationInterface } from '../interfaces/databaseCommunicationInterface';
 import * as firebaseAdmin from 'firebase-admin';
 
 export class FirebaseApiFacade<T> implements DatabaseCommunicationInterface {
@@ -29,6 +29,7 @@ export class FirebaseApiFacade<T> implements DatabaseCommunicationInterface {
 	async save(object: T, id: string): Promise<boolean> {
 		return (await await this.objectRef.doc(id).set(object)) != null;
 	}
+
 	async get(id: string): Promise<Object> {
 		return await (await this.objectRef.doc(id).get()).data();
 	}
@@ -42,9 +43,10 @@ export class FirebaseApiFacade<T> implements DatabaseCommunicationInterface {
 		).docs.map((doc) => doc.data());
 	}
 
-	async update(id: string, partialUser: any): Promise<boolean> {
-		return (await this.objectRef.doc(id).update(partialUser)) != null;
+	async update(id: string, user: any): Promise<boolean> {
+		return (await this.objectRef.doc(id).update(user)) != null;
 	}
+
 	async delete(id: string): Promise<boolean> {
 		return (await this.objectRef.doc(id).delete()) != null;
 	}
