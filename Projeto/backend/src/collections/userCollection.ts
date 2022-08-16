@@ -15,7 +15,7 @@ export default class UserCollection {
 	async getUsers(userIdList: Array<string>): Promise<Object> {
 		return await this.userRepository.getUsers(userIdList);
 	}
-	async updateUser(userId: string, user: any): Promise<boolean> {
+	async updateUser(userId: string, user: User): Promise<boolean> {
 		return await this.userRepository.updateUser(userId, user);
 	}
 	async deleteUser(userId: string): Promise<boolean> {

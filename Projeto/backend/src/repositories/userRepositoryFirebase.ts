@@ -1,5 +1,5 @@
 import { UserRepositoryInterface } from '../interfaces/userRepositoryInterface';
-import { FirebaseApiFacade } from '../models/facades/firebaseApiFacade';
+import { FirebaseApiFacade } from '../facades/firebaseApiFacade';
 import { User } from '../models/User';
 
 export class UserRepositoryFirebase implements UserRepositoryInterface {

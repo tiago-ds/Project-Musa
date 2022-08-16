@@ -15,20 +15,30 @@ export default class UserRoutes implements IRoutes {
 	}
 
 	initializeRoutes() {
-		this.app.get(`/${this.baseRoute}`, (req, res, next) =>
-			this.userController.handleRequest(req, res, next)
+		this.app.get(
+			`/${this.baseRoute}`,
+			async (req, res, next) =>
+				await this.userController.getUsers(req, res, next)
 		);
-		this.app.get(`/${this.baseRoute}/:id`, (req, res, next) =>
-			this.userController.handleRequest(req, res, next)
+		this.app.get(
+			`/${this.baseRoute}/:id`,
+			async (req, res, next) =>
+				await this.userController.getUser(req, res, next)
 		);
-		this.app.post(`/${this.baseRoute}`, (req, res, next) =>
-			this.userController.handleRequest(req, res, next)
+		this.app.post(
+			`/${this.baseRoute}`,
+			async (req, res, next) =>
+				await this.userController.createUser(req, res, next)
 		);
-		this.app.patch(`/${this.baseRoute}/:id`, (req, res, next) =>
-			this.userController.handleRequest(req, res, next)
+		this.app.patch(
+			`/${this.baseRoute}/:id`,
+			async (req, res, next) =>
+				await this.userController.updateUser(req, res, next)
 		);
-		this.app.delete(`/${this.baseRoute}/:id`, (req, res, next) =>
-			this.userController.handleRequest(req, res, next)
+		this.app.delete(
+			`/${this.baseRoute}/:id`,
+			async (req, res, next) =>
+				await this.userController.deleteUser(req, res, next)
 		);
 	}
 }

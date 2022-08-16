@@ -1,124 +1,101 @@
-import { Request } from 'express';
 import UserCollection from '../collections/userCollection';
+import { User } from '../models/User';
+import { MusaResponse } from '../models/Response';
 
 export default class UserControl {
 	userCollection: UserCollection;
-	handlers = {
-		GET: {
-			'/user': this.getUsers.bind(this),
-			'/user/:id': this.getUser.bind(this),
-		},
-		POST: {
-			'/user': this.createUser.bind(this),
-		},
-		PATCH: {
-			'/user/:id': this.updateUser.bind(this),
-		},
-		DELETE: {
-			'/user/:id': this.deleteUser.bind(this),
-		},
-	};
+
 	constructor() {
 		this.userCollection = new UserCollection();
 	}
 
-	async handleUserRequest(request: Request) {
-		const handler = this.handlers[request.method][request.route.path];
-
-		if (handler) {
-			return await handler(request);
-		} else {
-			return {
-				message: 'No handler found for this request',
-			};
-		}
-	}
-
-	async getUser(request: Request) {
-		const user = await this.userCollection.getUser(request.params.id);
+	async getUser<T>(userId: T): Promise<MusaResponse<User>> {
+		const user = (await this.userCollection.getUser(
+			userId as unknown as string
+		)) as User;
 
 		if (user) {
 			return {
-				message: `User with id ${request.params.id} found`,
 				data: user,
 				statusCode: 200,
 			};
 		} else {
 			return {
-				message: `User with id ${request.params.id} not found`,
+				data: null,
 				statusCode: 404,
 			};
 		}
 	}
 
-	async getUsers(request: Request) {
-		console.log(request.body);
+	async getUsers<T>(userIds: T): Promise<MusaResponse<User[]>> {
+		const users = (await this.userCollection.getUsers(
+			userIds as unknown as string[]
+		)) as User[];
 
-		const user = await this.userCollection.getUsers(request.body.userIds);
-
-		if (user) {
+		if (users) {
 			return {
-				message: `User with id ${request.params.id} found`,
-				data: user,
+				data: users,
 				statusCode: 200,
 			};
 		} else {
 			return {
-				message: `User with id ${request.params.id} not found`,
+				data: null,
 				statusCode: 404,
 			};
 		}
 	}
 
-	async createUser(request: Request) {
-		const user = await this.userCollection.createUser(request.body);
-
-		if (user) {
-			return {
-				message: `User with id ${request.params.id} found`,
-				data: user,
-				statusCode: 200,
-			};
-		} else {
-			return {
-				message: `User with id ${request.params.id} not found`,
-				statusCode: 404,
-			};
-		}
-	}
-
-	async updateUser(request: Request) {
-		const user = await this.userCollection.updateUser(
-			request.params.id,
-			request.body
+	async createUser<T>(user: T): Promise<MusaResponse<string>> {
+		const userCreated = await this.userCollection.createUser(
+			user as unknown as User
 		);
 
-		if (user) {
+		if (userCreated) {
 			return {
-				message: `User with id ${request.params.id} found`,
-				data: user,
+				data: (user as unknown as User).id,
 				statusCode: 200,
 			};
 		} else {
 			return {
-				message: `User with id ${request.params.id} not found`,
+				data: null,
 				statusCode: 404,
 			};
 		}
 	}
 
-	async deleteUser(request: Request) {
-		const user = await this.userCollection.deleteUser(request.params.id);
+	async updateUser<T>(user: T): Promise<MusaResponse<boolean>> {
+		const userId = (user as unknown as User).id;
+		const userUpdated = await this.userCollection.updateUser(
+			userId,
+			user as unknown as User
+		);
 
-		if (user) {
+		if (userUpdated) {
 			return {
-				message: `User with id ${request.params.id} found`,
-				data: user,
+				data: userUpdated,
 				statusCode: 200,
 			};
 		} else {
 			return {
-				message: `User with id ${request.params.id} not found`,
+				data: null,
+				statusCode: 404,
+			};
+		}
+	}
+
+	async deleteUser<T>(id: T): Promise<MusaResponse<boolean>> {
+		const userDeleted = await this.userCollection.deleteUser(
+			id as unknown as string
+		);
+
+		if (userDeleted) {
+			return {
+				data: userDeleted,
+				statusCode: 200,
+			};
+		} else {
+			return {
+				data: null,
 				statusCode: 404,
 			};
 		}
