@@ -30,7 +30,7 @@ export default class UserRoutes implements IRoutes {
 			async (req, res, next) =>
 				await this.userController.createUser(req, res, next)
 		);
-		this.app.patch(
+		this.app.put(
 			`/${this.baseRoute}/:id`,
 			async (req, res, next) =>
 				await this.userController.updateUser(req, res, next)
