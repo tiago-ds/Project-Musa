@@ -1,12 +1,16 @@
 import {
-	Response,
+	AuthorizationResponse,
 	AuthorizationCodeGrantResponse,
+	RefreshAccessTokenResponse,
 } from './authCodeGrantResponse';
 
 export interface IMusicStreamingComunication {
-	getAuthorizeUrl(): string;
+	getAuthorizeUrl(redirectUri: string): string;
 	getInitialCredentials(
 		code: string
-	): Promise<Response<AuthorizationCodeGrantResponse>>;
-	refreshAccessToken(accessToken: string, refreshToken: string): Promise<any>;
+	): Promise<AuthorizationResponse<AuthorizationCodeGrantResponse>>;
+	refreshAccessToken(
+		accessToken: string,
+		refreshToken: string
+	): Promise<AuthorizationResponse<RefreshAccessTokenResponse>>;
 }
