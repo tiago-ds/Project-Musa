@@ -2,6 +2,7 @@ import express from 'express';
 import UserRoutes from './routes/userRoutes';
 import dotevn from 'dotenv';
 import AuthRoutes from './routes/authRoutes';
+import ChallengeRoutes from './routes/challengeRoutes';
 
 dotevn.config();
 
@@ -10,6 +11,7 @@ app.use(express.json());
 
 const userRoutes = new UserRoutes(app);
 const authRoutes = new AuthRoutes(app);
+const challengeRoutes = new ChallengeRoutes(app);
 
 app.listen(process.env.PORT || 5000, () => {
 	console.log(

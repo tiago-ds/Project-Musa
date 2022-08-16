@@ -15,20 +15,8 @@ export default class ChallengeRoutes implements IRoutes {
 	}
 
 	initializeRoutes() {
-		// this.app.get(`/${this.baseRoute}`, (req, res, next) =>
-		// 	this.challengeController.getUsers(req, res, next)
-		// );
-		// this.app.get(`/${this.baseRoute}/:id`, (req, res, next) =>
-		// 	this.challengeController.getUser(req, res, next)
-		// );
-		// this.app.post(`/${this.baseRoute}/:id`, (req, res, next) =>
-		// 	this.challengeController.createUser(req, res, next)
-		// );
-		// this.app.put(`/${this.baseRoute}/:id`, (req, res, next) =>
-		// 	this.challengeController.updateUser(req, res, next)
-		// );
-		// this.app.delete(`/${this.baseRoute}/:id`, (req, res, next) =>
-		// 	this.challengeController.deleteUser(req, res, next)
-		// );
+		this.app.post(`/${this.baseRoute}`, (req, res, next) =>
+			this.challengeController.createChallenge(req, res, next)
+		);
 	}
 }
