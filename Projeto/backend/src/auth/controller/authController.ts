@@ -1,13 +1,13 @@
 import { NextFunction, Response, Request } from 'express';
 import { OperationType } from '../../models/OperationType';
 import { Credentials } from '../models/Credentials';
-import { Facade } from '../../facades/facade';
+import { Facade, FacadeInstance } from '../../facades/facade';
 
 export default class AuthController {
 	facade: Facade;
 
 	constructor() {
-		this.facade = new Facade();
+		this.facade = FacadeInstance;
 	}
 
 	async getAuthorizeUrl(

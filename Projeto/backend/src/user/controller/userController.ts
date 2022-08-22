@@ -1,5 +1,5 @@
 import { NextFunction, Response, Request } from 'express';
-import { Facade } from '../../facades/facade';
+import { Facade, FacadeInstance } from '../../facades/facade';
 import { OperationType } from '../../models/OperationType';
 import { User } from '../models/User';
 
@@ -7,7 +7,7 @@ export default class UserController {
 	facade: Facade;
 
 	constructor() {
-		this.facade = new Facade();
+		this.facade = FacadeInstance;
 	}
 
 	async getUsers(

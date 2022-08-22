@@ -5,12 +5,22 @@ import { OperationType } from '../models/OperationType';
 import { User } from '../user/models/User';
 import { Credentials } from '../auth/models/Credentials';
 import { Challenge } from '../challenge/models/Challenge';
+import dotevn from 'dotenv';
 
 export class Facade {
 	userControl: UserControl;
 	authControl: AuthControl;
 	challengeControl: ChallengeControl;
+
+	private static _instance: Facade;
+
+	public static get Instance() {
+		return this._instance || (this._instance = new this());
+	}
+
 	constructor() {
+		dotevn.config();
+
 		this.userControl = new UserControl();
 		this.authControl = new AuthControl();
 		this.challengeControl = new ChallengeControl();
@@ -56,3 +66,5 @@ export class Facade {
 		return await this.challengeControl.createChallenge(challenge);
 	}
 }
+
+export const FacadeInstance = Facade.Instance;
