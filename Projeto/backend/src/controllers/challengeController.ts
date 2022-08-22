@@ -15,13 +15,9 @@ export default class ChallengeController {
 		res: Response,
 		next: NextFunction
 	): Promise<void> {
-		const operationType = OperationType.CREATE_CHALLENGE;
 		const challenge = req.body;
-
-		const response = await this.facade.handleRequest<Challenge>(
-			operationType,
-			challenge
-		);
+		const response = await this.facade.createChallenge(challenge);
+		
 		res.status(response.statusCode).json(response.data);
 	}
 }

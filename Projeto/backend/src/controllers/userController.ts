@@ -15,13 +15,9 @@ export default class UserController {
 		res: Response,
 		next: NextFunction
 	): Promise<void> {
-		const operation = OperationType.GET_USERS;
 		const userIds = req.body.userIds;
+		const response = await this.facade.getUsers(userIds);
 
-		const response = await this.facade.handleRequest<string[]>(
-			operation,
-			userIds
-		);
 		res.status(response.statusCode).json(response.data);
 	}
 
@@ -30,13 +26,8 @@ export default class UserController {
 		res: Response,
 		next: NextFunction
 	): Promise<void> {
-		const operation = OperationType.GET_USER;
 		const userId = req.params.id;
-
-		const response = await this.facade.handleRequest<string>(
-			operation,
-			userId
-		);
+		const response = await this.facade.getUser(userId);
 
 		res.status(response.statusCode).json(response.data);
 	}
@@ -46,10 +37,9 @@ export default class UserController {
 		res: Response,
 		next: NextFunction
 	): Promise<void> {
-		const operation = OperationType.CREATE_USER;
 		const user = req.body;
+		const response = await this.facade.createUser(user);
 
-		const response = await this.facade.handleRequest<User>(operation, user);
 		res.status(response.statusCode).json(response.data);
 	}
 
@@ -58,10 +48,9 @@ export default class UserController {
 		res: Response,
 		next: NextFunction
 	): Promise<void> {
-		const operation = OperationType.UPDATE_USER;
 		const user = req.body;
+		const response = await this.facade.updateUser(user);
 
-		const response = await this.facade.handleRequest<User>(operation, user);
 		res.status(response.statusCode).json(response.data);
 	}
 
@@ -70,13 +59,9 @@ export default class UserController {
 		res: Response,
 		next: NextFunction
 	): Promise<void> {
-		const operation = OperationType.DELETE_USER;
 		const userId = req.params.id;
+		const response = await this.facade.deleteUser(userId);
 
-		const response = await this.facade.handleRequest<string>(
-			operation,
-			userId
-		);
 		res.status(response.statusCode).json(response.data);
 	}
 }

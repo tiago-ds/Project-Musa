@@ -13,4 +13,8 @@ export interface IMusicStreamingComunication {
 		accessToken: string,
 		refreshToken: string
 	): Promise<AuthorizationResponse<RefreshAccessTokenResponse>>;
+	getProfileInfo(
+		accessToken: string,
+		refreshToken: string
+	):  Promise<any>;
 }

@@ -15,13 +15,9 @@ export default class AuthController {
 		res: Response,
 		next: NextFunction
 	): Promise<void> {
-		const operation = OperationType.AUTHORIZE_URL;
 		const redirectUri = req.body.redirect_uri;
+		const response = await this.facade.authorizeUrl(redirectUri);
 
-		const response = await this.facade.handleRequest<string>(
-			operation,
-			redirectUri
-		);
 		res.status(response.statusCode).json(response.data);
 	}
 
@@ -30,13 +26,8 @@ export default class AuthController {
 		res: Response,
 		next: NextFunction
 	): Promise<void> {
-		const operation = OperationType.AUTH_CODE_GRANT;
 		const code = req.body.code;
-
-		const response = await this.facade.handleRequest<string>(
-			operation,
-			code
-		);
+		const response = await this.facade.getCredentials(code);
 
 		res.status(response.statusCode).json(response.data);
 	}
@@ -46,13 +37,9 @@ export default class AuthController {
 		res: Response,
 		next: NextFunction
 	): Promise<void> {
-		const operation = OperationType.REFRESH_TOKEN;
 		const credentials = req.body;
+		const response = await this.facade.refreshToken(credentials);
 
-		const response = await this.facade.handleRequest<Credentials>(
-			operation,
-			credentials
-		);
 		res.status(response.statusCode).json(response.data);
 	}
 
@@ -61,13 +48,9 @@ export default class AuthController {
 		res: Response,
 		next: NextFunction
 	): Promise<void> {
-		const operation = OperationType.LOGIN;
 		const credentials = req.body;
+		const response = await this.facade.login(credentials);
 
-		const response = await this.facade.handleRequest<Credentials>(
-			operation,
-			credentials
-		);
 		res.status(response.statusCode).json(response.data);
 	}
 }

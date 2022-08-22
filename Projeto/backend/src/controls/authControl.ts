@@ -2,22 +2,26 @@ import {
 	AuthorizationCodeGrantResponse,
 	RefreshAccessTokenResponse,
 } from '../interfaces/authCodeGrantResponse';
-import SpotifyApiFacade from '../facades/spotifyApiFacade';
 import { MusaResponse } from '../models/Response';
 import { Credentials } from '../models/Credentials';
+
 import UserCollection from '../collections/userCollection';
 
+import { MusicServiceFactory } from '../factories/musicServiceFactory';
+import { IMusicStreamingComunication } from '../interfaces/musicStreamingComunication';
+
 export default class AuthControl {
-	spotifyApi: SpotifyApiFacade;
+	streamingApi: IMusicStreamingComunication;
 	userCollection: UserCollection;
+	musicServiceFactory: MusicServiceFactory = new MusicServiceFactory();
 
 	constructor() {
-		this.spotifyApi = new SpotifyApiFacade();
+		this.streamingApi = this.musicServiceFactory.create("spotify");
 		this.userCollection = new UserCollection();
 	}
 
 	async getAuthorizeUrl<T>(redirectUri: T): Promise<MusaResponse<string>> {
-		const authorizeUrl = await this.spotifyApi.getAuthorizeUrl(
+		const authorizeUrl = await this.streamingApi.getAuthorizeUrl(
 			redirectUri as unknown as string
 		);
 
@@ -37,7 +41,7 @@ export default class AuthControl {
 		code: T
 	): Promise<MusaResponse<AuthorizationCodeGrantResponse>> {
 		const authorizationCodeGrantResponse =
-			await this.spotifyApi.getInitialCredentials(
+			await this.streamingApi.getInitialCredentials(
 				code as unknown as string
 			);
 
@@ -64,7 +68,7 @@ export default class AuthControl {
 		console.log(credentialsTokens);
 
 		const refreshAccessTokenResponse =
-			await this.spotifyApi.refreshAccessToken(
+			await this.streamingApi.refreshAccessToken(
 				credentialsTokens.access_token,
 				credentialsTokens.refresh_token
 			);
@@ -84,7 +88,7 @@ export default class AuthControl {
 
 	async login<T>(credentials: T) {
 		const credentialsLogin = credentials as unknown as Credentials;
-		const loginResponse = await this.spotifyApi.getProfileInfo(
+		const loginResponse = await this.streamingApi.getProfileInfo(
 			credentialsLogin.access_token,
 			credentialsLogin.refresh_token
 		);
