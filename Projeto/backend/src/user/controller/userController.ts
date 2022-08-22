@@ -1,6 +1,6 @@
 import { NextFunction, Response, Request } from 'express';
-import { Facade } from '../facades/facade';
-import { OperationType } from '../models/OperationType';
+import { Facade } from '../../facades/facade';
+import { OperationType } from '../../models/OperationType';
 import { User } from '../models/User';
 
 export default class UserController {

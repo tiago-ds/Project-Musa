@@ -1,5 +1,5 @@
 import { Express } from 'express';
-import UserController from '../controllers/userController';
+import UserController from './controller/userController';
 import IRoutes from '../interfaces/routesInterface';
 
 export default class UserRoutes implements IRoutes {

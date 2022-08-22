@@ -1,6 +1,6 @@
 import { Express } from 'express';
-import AuthController from '../controllers/authController';
-import UserController from '../controllers/userController';
+import AuthController from './controller/authController';
+import UserController from '../user/controller/userController';
 import IRoutes from '../interfaces/routesInterface';
 
 export default class AuthRoutes implements IRoutes {

@@ -1,7 +1,7 @@
 import { NextFunction, Response, Request } from 'express';
-import { OperationType } from '../models/OperationType';
+import { OperationType } from '../../models/OperationType';
 import { Credentials } from '../models/Credentials';
-import { Facade } from '../facades/facade';
+import { Facade } from '../../facades/facade';
 
 export default class AuthController {
 	facade: Facade;

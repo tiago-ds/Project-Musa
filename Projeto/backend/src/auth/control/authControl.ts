@@ -1,14 +1,14 @@
 import {
 	AuthorizationCodeGrantResponse,
 	RefreshAccessTokenResponse,
-} from '../interfaces/authCodeGrantResponse';
-import { MusaResponse } from '../models/Response';
+} from '../models/authCodeGrantResponse';
+import { MusaResponse } from '../../models/Response';
 import { Credentials } from '../models/Credentials';
 
-import UserCollection from '../collections/userCollection';
+import UserCollection from '../../user/collection/userCollection';
 
-import { MusicServiceFactory } from '../factories/musicServiceFactory';
-import { IMusicStreamingComunication } from '../interfaces/musicStreamingComunication';
+import { MusicServiceFactory } from '../../factories/musicServiceFactory';
+import { IMusicStreamingComunication } from '../../interfaces/musicStreamingComunication';
 
 export default class AuthControl {
 	streamingApi: IMusicStreamingComunication;
@@ -16,7 +16,7 @@ export default class AuthControl {
 	musicServiceFactory: MusicServiceFactory = new MusicServiceFactory();
 
 	constructor() {
-		this.streamingApi = this.musicServiceFactory.create("spotify");
+		this.streamingApi = this.musicServiceFactory.create('spotify');
 		this.userCollection = new UserCollection();
 	}
 

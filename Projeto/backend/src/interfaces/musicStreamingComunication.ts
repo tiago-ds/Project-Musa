@@ -2,7 +2,7 @@ import {
 	AuthorizationResponse,
 	AuthorizationCodeGrantResponse,
 	RefreshAccessTokenResponse,
-} from './authCodeGrantResponse';
+} from '../auth/models/authCodeGrantResponse';
 
 export interface IMusicStreamingComunication {
 	getAuthorizeUrl(redirectUri: string): string;
@@ -13,8 +13,5 @@ export interface IMusicStreamingComunication {
 		accessToken: string,
 		refreshToken: string
 	): Promise<AuthorizationResponse<RefreshAccessTokenResponse>>;
-	getProfileInfo(
-		accessToken: string,
-		refreshToken: string
-	):  Promise<any>;
+	getProfileInfo(accessToken: string, refreshToken: string): Promise<any>;
 }

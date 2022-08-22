@@ -1,5 +1,5 @@
 import { Express } from 'express';
-import ChallengeController from '../controllers/challengeController';
+import ChallengeController from './controller/challengeController';
 import IRoutes from '../interfaces/routesInterface';
 
 export default class ChallengeRoutes implements IRoutes {

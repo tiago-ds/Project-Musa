@@ -1,5 +1,5 @@
 import { Challenge } from '../models/Challenge';
-import { ChallengeRepositoryFirebase } from '../repositories/challengeRepositoryFirebase';
+import { ChallengeRepositoryFirebase } from '../repository/challengeRepositoryFirebase';
 
 export default class ChallengeCollection {
 	private challengeRepository: ChallengeRepositoryFirebase;

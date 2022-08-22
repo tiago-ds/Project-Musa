@@ -1,6 +1,6 @@
-import { FirebaseApiFacade } from '../facades/firebaseApiFacade';
+import { FirebaseApiFacade } from '../../facades/firebaseApiFacade';
 import { Challenge } from '../models/Challenge';
-import { ChallengeRepositoryInterface } from '../interfaces/challengeRepositoryInterface';
+import { ChallengeRepositoryInterface } from '../models/challengeRepositoryInterface';
 
 export class ChallengeRepositoryFirebase
 	implements ChallengeRepositoryInterface

@@ -1,6 +1,6 @@
-import { Facade } from '../facades/facade';
+import { Facade } from '../../facades/facade';
 import { NextFunction, Response, Request } from 'express';
-import { OperationType } from '../models/OperationType';
+import { OperationType } from '../../models/OperationType';
 import { Challenge } from '../models/Challenge';
 
 export default class ChallengeController {
@@ -17,7 +17,7 @@ export default class ChallengeController {
 	): Promise<void> {
 		const challenge = req.body;
 		const response = await this.facade.createChallenge(challenge);
-		
+
 		res.status(response.statusCode).json(response.data);
 	}
 }

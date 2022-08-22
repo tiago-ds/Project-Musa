@@ -1,5 +1,5 @@
 import { User } from '../models/User';
-import { UserRepositoryFirebase } from '../repositories/userRepositoryFirebase';
+import { UserRepositoryFirebase } from '../repository/userRepositoryFirebase';
 
 export default class UserCollection {
 	private userRepository: UserRepositoryFirebase;

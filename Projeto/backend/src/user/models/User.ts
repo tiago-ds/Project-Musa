@@ -1,4 +1,4 @@
-import { ChallengeData } from './ChallengeData';
+import { ChallengeData } from '../../challenge/models/ChallengeData';
 import { UserData } from './UserData';
 
 export interface User {

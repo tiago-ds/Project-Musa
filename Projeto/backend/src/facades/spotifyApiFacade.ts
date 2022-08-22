@@ -3,7 +3,7 @@ import {
 	AuthorizationResponse,
 	AuthorizationCodeGrantResponse,
 	RefreshAccessTokenResponse,
-} from '../interfaces/authCodeGrantResponse';
+} from '../auth/models/authCodeGrantResponse';
 import { IMusicStreamingComunication } from '../interfaces/musicStreamingComunication';
 
 export default class SpotifyApiFacade implements IMusicStreamingComunication {

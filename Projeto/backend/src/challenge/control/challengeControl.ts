@@ -1,5 +1,5 @@
-import ChallengeCollection from '../collections/challengeCollection';
-import SpotifyApiFacade from '../facades/spotifyApiFacade';
+import ChallengeCollection from '../collection/challengeCollection';
+import SpotifyApiFacade from '../../facades/spotifyApiFacade';
 import { Challenge } from '../models/Challenge';
 
 export default class ChallengeControl {

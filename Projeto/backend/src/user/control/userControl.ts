@@ -1,6 +1,6 @@
-import UserCollection from '../collections/userCollection';
+import UserCollection from '../collection/userCollection';
 import { User } from '../models/User';
-import { MusaResponse } from '../models/Response';
+import { MusaResponse } from '../../models/Response';
 
 export default class UserControl {
 	userCollection: UserCollection;

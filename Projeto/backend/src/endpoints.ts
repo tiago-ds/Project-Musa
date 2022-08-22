@@ -1,8 +1,8 @@
 import express from 'express';
-import UserRoutes from './routes/userRoutes';
+import UserRoutes from './user/userRoutes';
 import dotevn from 'dotenv';
-import AuthRoutes from './routes/authRoutes';
-import ChallengeRoutes from './routes/challengeRoutes';
+import AuthRoutes from './auth/authRoutes';
+import ChallengeRoutes from './challenge/challengeRoutes';
 
 dotevn.config();
 

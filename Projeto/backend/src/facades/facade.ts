@@ -1,10 +1,10 @@
-import AuthControl from '../controls/authControl';
-import ChallengeControl from '../controls/challengeControl';
-import UserControl from '../controls/userControl';
+import AuthControl from '../auth/control/authControl';
+import ChallengeControl from '../challenge/control/challengeControl';
+import UserControl from '../user/control/userControl';
 import { OperationType } from '../models/OperationType';
-import { User } from '../models/User';
-import { Credentials } from '../models/Credentials';
-import { Challenge } from '../models/Challenge';
+import { User } from '../user/models/User';
+import { Credentials } from '../auth/models/Credentials';
+import { Challenge } from '../challenge/models/Challenge';
 
 export class Facade {
 	userControl: UserControl;
@@ -27,11 +27,11 @@ export class Facade {
 	async createUser(user: User) {
 		return await this.userControl.createUser(user);
 	}
-	
+
 	async updateUser(user: User) {
 		return await this.userControl.updateUser(user);
 	}
-	
+
 	async deleteUser(userId: string) {
 		return await this.userControl.deleteUser(userId);
 	}
@@ -39,7 +39,7 @@ export class Facade {
 	async getCredentials(code: string) {
 		return await this.authControl.getCredentials(code);
 	}
-	
+
 	async refreshToken(credentials: Credentials) {
 		return await this.authControl.refreshToken(credentials);
 	}
