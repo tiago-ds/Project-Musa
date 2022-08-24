@@ -1,0 +1,28 @@
+<ion-content class="blur-bg-dimmed" [fullscreen]="true" *ngIf="endpointService.userData">
+<div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 flex items-center justify-between">
+    <h1 class="text-3xl font-display tracking-tight sm:text-4xl">
+        <img class="h-8 py-2" src="../../assets/project-musa-icon.svg" alt="Project Musa">
+        <span>Oi, </span>
+        <span class="font-bold">{{ endpointService.userData.display_name }}</span>
+        <span>!</span>
+    </h1>
+    <ion-avatar>
+        <img [src]="endpointService.userData.images[0].url">
+    </ion-avatar>
+</div>
+
+<div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8">
+    <p class="font-display text-xl"><strong class="font-bold">Vários desafios estão esperando por você!</strong> Para começar, crie um desafio ou junte-se a um existente.</p>
+</div>
+
+<div class="py-24 absolute bottom-0 w-full">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center py-12">
+            <input [(ngModel)]="challengeUuid" class="shadow-lg rounded-md border-0 p-4 w-full h-14 mr-2 bg-darkgray text-white text-xl" placeholder="Insira o código aqui...">
+            <ion-button (click)="viewChallenge()" size="large" color="secondary">Visualizar</ion-button>
+        </div>
+        <ion-button routerLink="/challenge/new" class="my-4 normal-case font-display tracking-tight" expand="block" size="large">Desafiar alguém</ion-button>
+        <ion-button routerLink="/challenge/join" class="my-4 normal-case font-display tracking-tight" expand="block" size="large" color="secondary">Entrar em desafio existente</ion-button>
+    </div>
+</div>
+</ion-content>
