@@ -1,22 +1,33 @@
-<ion-content class="blur-bg-dimmed" [fullscreen]="true" *ngIf="endpointService.userData">
-  <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 flex items-center justify-between">
-      <h1 class="text-3xl font-display tracking-tight sm:text-4xl">
-          <span>Perfil</span>
-      </h1>
+<ion-content
+  class="blur-bg-dimmed"
+  [fullscreen]="true"
+  *ngIf="authService.userData"
+>
+  <div
+    class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 flex items-center justify-between"
+  >
+    <h1 class="text-3xl font-display tracking-tight sm:text-4xl">
+      <span>Perfil</span>
+    </h1>
   </div>
   <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8 flex items-center">
     <ion-avatar>
-        <img [src]="endpointService.userData.images[0].url">
+      <img [src]="authService.userData.images[0].url" />
     </ion-avatar>
     <h1 class="text-3xl pl-8 font-display font-bold tracking-tight sm:text-4xl">
-      {{ endpointService.userData.display_name }}
+      {{ authService.userData.display_name }}
     </h1>
   </div>
 
   <div class="py-24 absolute bottom-0 w-full">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <ion-button (click)="logout()" class="my-4 normal-case font-display tracking-tight" expand="block" size="large">Sair da conta</ion-button>
+      <ion-button
+        (click)="logout()"
+        class="my-4 normal-case font-display tracking-tight"
+        expand="block"
+        size="large"
+        >Sair da conta</ion-button
+      >
     </div>
   </div>
-  </ion-content>
-  
+</ion-content>

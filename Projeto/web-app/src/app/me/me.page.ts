@@ -1,20 +1,17 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { EndpointService } from '../musa-services/endpoint.service';
+import { AuthService } from '../musa-services/auth.service';
 
 @Component({
   selector: 'app-me',
   templateUrl: 'me.page.html',
-  styleUrls: ['me.page.scss']
+  styleUrls: ['me.page.scss'],
 })
 export class MePage {
-
-  constructor(public endpointService: EndpointService, public router: Router) {
-  }
+  constructor(public authService: AuthService, public router: Router) {}
 
   logout() {
-    this.endpointService.logout();
+    this.authService.logout();
     this.router.navigate(['login']);
   }
-
 }
