@@ -38,11 +38,11 @@ export default class AuthControl {
 		}
 	}
 	async getCredentials<T>(
-		code: T
+		credentials: T
 	): Promise<MusaResponse<AuthorizationCodeGrantResponse>> {
 		const authorizationCodeGrantResponse =
 			await this.streamingApi.getInitialCredentials(
-				code as unknown as string
+				credentials as unknown as string
 			);
 
 		const authorizationCodeGrant = authorizationCodeGrantResponse.body;
@@ -99,7 +99,7 @@ export default class AuthControl {
 
 		if (userFound) {
 			return {
-				data: userFound,
+				data: loginResponse,
 				statusCode: 200,
 			};
 		} else if (loginResponse && !userFound) {

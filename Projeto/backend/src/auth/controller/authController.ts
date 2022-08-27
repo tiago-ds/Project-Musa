@@ -15,7 +15,7 @@ export default class AuthController {
 		res: Response,
 		next: NextFunction
 	): Promise<void> {
-		const redirectUri = req.body.redirect_uri;
+		const redirectUri = req.query.redirectUri as string;
 		const response = await this.facade.authorizeUrl(redirectUri);
 
 		res.status(response.statusCode).json(response.data);
@@ -26,8 +26,8 @@ export default class AuthController {
 		res: Response,
 		next: NextFunction
 	): Promise<void> {
-		const code = req.body.code;
-		const response = await this.facade.getCredentials(code);
+		const credentials = req.body;
+		const response = await this.facade.getCredentials(credentials);
 
 		res.status(response.statusCode).json(response.data);
 	}

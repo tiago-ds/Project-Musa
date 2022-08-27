@@ -31,9 +31,10 @@ export default class SpotifyApiFacade implements IMusicStreamingComunication {
 	}
 
 	async getInitialCredentials(
-		code: string
+		credentials: any
 	): Promise<AuthorizationResponse<AuthorizationCodeGrantResponse>> {
-		return await this.spotifyApi.authorizationCodeGrant(code);
+		this.spotifyApi.setRedirectURI(credentials.redirectUri);
+		return await this.spotifyApi.authorizationCodeGrant(credentials.code);
 	}
 
 	async refreshAccessToken(
