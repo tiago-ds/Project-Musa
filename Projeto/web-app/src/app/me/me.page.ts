@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../musa-services/auth.service';
+import { UserService } from '../musa-services/user.service';
 
 @Component({
   selector: 'app-me',
@@ -8,7 +9,11 @@ import { AuthService } from '../musa-services/auth.service';
   styleUrls: ['me.page.scss'],
 })
 export class MePage {
-  constructor(public authService: AuthService, public router: Router) {}
+  constructor(
+    public userService: UserService,
+    private authService: AuthService,
+    public router: Router
+  ) {}
 
   logout() {
     this.authService.logout();

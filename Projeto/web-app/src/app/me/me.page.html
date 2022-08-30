@@ -1,7 +1,7 @@
 <ion-content
   class="blur-bg-dimmed"
   [fullscreen]="true"
-  *ngIf="authService.userData"
+  *ngIf="userService.userData"
 >
   <div
     class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 flex items-center justify-between"
@@ -12,10 +12,10 @@
   </div>
   <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8 flex items-center">
     <ion-avatar>
-      <img [src]="authService.userData.images[0].url" />
+      <img [src]="userService.userData.images[0].url" />
     </ion-avatar>
     <h1 class="text-3xl pl-8 font-display font-bold tracking-tight sm:text-4xl">
-      {{ authService.userData.display_name }}
+      {{ userService.userData.display_name }}
     </h1>
   </div>
 

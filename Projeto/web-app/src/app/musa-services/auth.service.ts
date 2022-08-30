@@ -9,17 +9,12 @@ import { SpotifyCredentials } from '../models/spotifyCredentials';
 })
 export class AuthService {
   private baseRoute: string;
-  public get userData() {
-    return this._userData;
-  }
-  public set userData(value: any) {
-    this._userData = value;
-  }
-  private _userData;
+  private credentials: SpotifyCredentials;
+
   constructor(private http: HttpClient, private storage: Storage) {
     this.storage.create();
-    this.storage.get('user').then((user) => {
-      this.userData = user;
+    this.storage.get('user-credentials').then((credentials) => {
+      this.credentials = credentials;
     });
     this.baseRoute = 'auth';
   }
@@ -39,16 +34,15 @@ export class AuthService {
   }
 
   async isLoggedIn(): Promise<boolean> {
-    const credentials = (await this.storage.get(
-      'user-credentials'
-    )) as SpotifyCredentials;
-    this.userData = await this.storage.get('user');
-    if (!credentials) {
+    this.credentials =
+      this.credentials ??
+      ((await this.storage.get('user-credentials')) as SpotifyCredentials);
+    if (!this.credentials) {
       return false;
-    } else if (credentials.expires_at > Date.now()) {
+    } else if (this.credentials.expires_at > Date.now()) {
       return true;
     } else {
-      return this.refreshToken(credentials);
+      return await this.refreshToken(this.credentials);
     }
   }
 
@@ -65,12 +59,13 @@ export class AuthService {
         ...request,
         expires_at: Date.now() + request.expires_in * 1000,
       };
+      this.credentials = requestCredentials;
       await this.storage.set('user-credentials', requestCredentials);
       return requestCredentials;
     } catch (error) {}
   }
 
-  async login(tokens: Object) {
+  async login(tokens: object) {
     try {
       const request = await this.http
         .post(`${environment.apiUrl}/${this.baseRoute}/login`, {
@@ -97,6 +92,7 @@ export class AuthService {
           ...request,
           expires_at: Date.now() + credentials.expires_in * 1000,
         };
+        this.credentials = requestCredentials;
         await this.storage.set('user-credentials', requestCredentials);
         return true;
       } else {
@@ -107,6 +103,5 @@ export class AuthService {
 
   logout() {
     this.storage.clear();
-    this._userData = null;
   }
 }
