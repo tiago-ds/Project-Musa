@@ -5,26 +5,44 @@ import { MusicServiceFactory } from '../../factories/musicServiceFactory';
 import AuthCollection from '../../auth/collection/authCollection';
 import { ExplorerOrbCalculator } from '../orbCalculators/explorerOrbCalculator';
 import { MusaResponse } from '../../models/Response';
+import { EnergeticOrbCalculator } from '../orbCalculators/energeticOrbCalculator';
+import { ChallengeType } from '../models/ChallengeType';
+import { v4 } from 'uuid';
 
 export default class ChallengeControl {
 	explorerOrbCalculator: ExplorerOrbCalculator;
+	energeticOrbCalculator: EnergeticOrbCalculator;
 	streamingApi: SpotifyApiFacade;
 	challengeCollection: ChallengeCollection;
 	credentialsCollection: AuthCollection;
 	musicServiceFactory: MusicServiceFactory = new MusicServiceFactory();
+	mapOrbTypes: Map<String, any>;
 
 	constructor() {
 		this.streamingApi = this.musicServiceFactory.create('spotify');
 		this.challengeCollection = new ChallengeCollection();
 		this.credentialsCollection = new AuthCollection();
+		this.energeticOrbCalculator = new EnergeticOrbCalculator();
+		this.mapOrbTypes = new Map();
+		this.mapOrbTypes.set(
+			ChallengeType.Energetic,
+			this.energeticOrbCalculator.calculateOrb.bind(this)
+		);
 		this.explorerOrbCalculator = new ExplorerOrbCalculator();
+		this.mapOrbTypes.set(
+			ChallengeType.Explorer,
+			this.explorerOrbCalculator.calculateOrb.bind(this)
+		);
 	}
 
 	async createChallenge<T>(challenge: T): Promise<any> {
 		console.log(challenge);
 
-		const challengeCreated = this.challengeCollection.createChallenge(
-			challenge as unknown as Challenge
+		const challengeCreated = await this.challengeCollection.createChallenge(
+			{
+				...challenge,
+				id: v4()
+			} as unknown as Challenge
 		);
 
 		if (challengeCreated) {
@@ -46,9 +64,25 @@ export default class ChallengeControl {
 
 		if (challenge) {
 			for (const userId of Object.keys(challenge.challengeData)) {
-				const userCredentials =
+				let userCredentials =
 					await this.credentialsCollection.getCredentials(userId);
-				console.log(userCredentials);
+				if (userCredentials.expires_at > new Date().getTime()) {
+					userCredentials = {
+						...(
+							await this.streamingApi.refreshAccessToken(
+								userCredentials.access_token,
+								userCredentials.refresh_token
+							)
+						).body,
+						refresh_token: userCredentials.refresh_token,
+						expires_at: new Date().getTime() + 3600 * 1000
+					};
+					await this.credentialsCollection.updateCredentials(
+						userCredentials,
+						userId
+					);
+				}
+				console.log(new Date(challenge.lastUpdated));
 
 				if (userCredentials) {
 					this.streamingApi.setCredentials(
@@ -67,40 +101,54 @@ export default class ChallengeControl {
 
 					for (const track of userPlayedTracks.items) {
 						const trackInfo = {
-							track: await this.streamingApi.getTrack(
-								track.track.id
-							),
+							track: (
+								await this.streamingApi.getTrack(track.track.id)
+							).body,
 							trackFeatures:
-								await this.streamingApi.getTrackFeatures(
-									track.track.id
-								),
+								challenge.type == ChallengeType.Energetic
+									? (
+											await this.streamingApi.getTrackFeatures(
+												track.track.id
+											)
+									  ).body
+									: null,
 							playedAt: track.played_at
 						};
+						console.log(trackInfo.track.name);
 						tracksInfo.push(trackInfo);
 					}
-					const trackOrb =
-						await this.explorerOrbCalculator.calculateOrb(
-							tracksInfo
-						);
-					console.log(trackOrb);
+
+					console.log(challenge.type);
+					const trackOrb = this.mapOrbTypes.get(challenge.type)(
+						tracksInfo
+					);
+
+					const listenedSong =
+						challenge.challengeData[userId].listenedSongs;
+					const points = challenge.challengeData[userId].points;
+					const name = challenge.challengeData[userId].name;
 
 					challenge = {
 						...challenge,
-						challengeData: challenge.challengeData.set(userId, {
-							...challenge.challengeData.get(userId),
-							points: trackOrb.points,
-							listenedSongs: challenge.challengeData
-								.get(userId)
-								.listenedSongs.concat(tracksInfo)
-						})
+						challengeData: {
+							...challenge.challengeData,
+							[userId]: {
+								listenedSongs: listenedSong.concat(
+									trackOrb.challengeSongs
+								),
+								points: points + trackOrb.points,
+								name: name
+							}
+						},
+						lastUpdated: new Date().getTime()
+					};
+
+					await this.challengeCollection.updateChallenge(challenge);
+					return {
+						data: challenge,
+						statusCode: 200
 					};
 				}
-
-				await this.challengeCollection.updateChallenge(challenge);
-				return {
-					data: challenge,
-					statusCode: 200
-				};
 			}
 		} else {
 			return {

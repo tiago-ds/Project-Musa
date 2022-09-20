@@ -27,7 +27,6 @@ export default class SpotifyApiFacade implements IMusicStreamingComunication {
 	getAuthorizeUrl(redirectUri: string): string {
 		this.spotifyApi.setRedirectURI(redirectUri);
 		return this.spotifyApi.createAuthorizeURL(this.scopes, '');
-		this.spotifyApi.getMe();
 	}
 
 	async getInitialCredentials(

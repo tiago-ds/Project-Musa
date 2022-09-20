@@ -4,7 +4,7 @@ import { Orb } from './../models/Orb';
 import { TrackInfo } from '../models/TrackInfo';
 
 export class ExplorerOrbCalculator implements OrbCalculatorInterface {
-	async calculateOrb(tracksInfo: TrackInfo[]): Promise<Orb> {
+	calculateOrb(tracksInfo: TrackInfo[]): Orb {
 		const orb: Orb = {
 			points: 0,
 			challengeSongs: [],
@@ -12,7 +12,6 @@ export class ExplorerOrbCalculator implements OrbCalculatorInterface {
 		};
 		for (const trackInfo of tracksInfo) {
 			const track = trackInfo.track;
-			console.log(trackInfo);
 
 			const challengeSong = {
 				spotifyId: track.id,

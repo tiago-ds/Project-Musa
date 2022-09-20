@@ -1,6 +1,6 @@
 import {
 	AuthorizationCodeGrantResponse,
-	RefreshAccessTokenResponse,
+	RefreshAccessTokenResponse
 } from '../models/authCodeGrantResponse';
 import { MusaResponse } from '../../models/Response';
 import { Credentials } from '../models/Credentials';
@@ -31,12 +31,12 @@ export default class AuthControl {
 		if (authorizeUrl) {
 			return {
 				data: authorizeUrl,
-				statusCode: 200,
+				statusCode: 200
 			};
 		} else {
 			return {
 				data: null,
-				statusCode: 404,
+				statusCode: 404
 			};
 		}
 	}
@@ -53,12 +53,12 @@ export default class AuthControl {
 		if (authorizationCodeGrantResponse) {
 			return {
 				data: authorizationCodeGrant,
-				statusCode: 200,
+				statusCode: 200
 			};
 		} else {
 			return {
 				data: null,
-				statusCode: 404,
+				statusCode: 404
 			};
 		}
 	}
@@ -68,23 +68,37 @@ export default class AuthControl {
 	): Promise<MusaResponse<RefreshAccessTokenResponse>> {
 		const credentialsTokens =
 			tokens as unknown as RefreshAccessTokenResponse;
-		console.log(credentialsTokens);
 
-		const refreshAccessTokenResponse =
+		const refreshAccessTokenResponse = (
 			await this.streamingApi.refreshAccessToken(
 				credentialsTokens.access_token,
 				credentialsTokens.refresh_token
-			);
+			)
+		).body;
+
+		const me = await this.streamingApi.getProfileInfo(
+			refreshAccessTokenResponse.access_token,
+			refreshAccessTokenResponse.refresh_token
+		);
+
+		const userCredentials = {
+			...refreshAccessTokenResponse,
+			expires_at: new Date().getTime() + 3600 * 1000
+		};
+		await this.authCollection.updateCredentials(
+			userCredentials,
+			me.body.id
+		);
 
 		if (refreshAccessTokenResponse) {
 			return {
-				data: refreshAccessTokenResponse.body,
-				statusCode: 200,
+				data: refreshAccessTokenResponse,
+				statusCode: 200
 			};
 		} else {
 			return {
 				data: null,
-				statusCode: 404,
+				statusCode: 404
 			};
 		}
 	}
@@ -108,7 +122,7 @@ export default class AuthControl {
 
 			return {
 				data: loginResponse,
-				statusCode: 200,
+				statusCode: 200
 			};
 		} else if (loginResponse && !userFound) {
 			const userCreated = await this.userCollection.createUser(
@@ -123,18 +137,18 @@ export default class AuthControl {
 			if (userCreated) {
 				return {
 					data: loginResponse.body.id,
-					statusCode: 200,
+					statusCode: 200
 				};
 			} else {
 				return {
 					data: null,
-					statusCode: 404,
+					statusCode: 404
 				};
 			}
 		} else {
 			return {
 				data: null,
-				statusCode: 404,
+				statusCode: 404
 			};
 		}
 	}
