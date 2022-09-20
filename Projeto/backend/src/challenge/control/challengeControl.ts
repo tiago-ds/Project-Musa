@@ -38,16 +38,18 @@ export default class ChallengeControl {
 	async createChallenge<T>(challenge: T): Promise<any> {
 		console.log(challenge);
 
+		const id = v4();
+
 		const challengeCreated = await this.challengeCollection.createChallenge(
 			{
 				...challenge,
-				id: v4()
+				id
 			} as unknown as Challenge
 		);
 
 		if (challengeCreated) {
 			return {
-				data: (challenge as unknown as Challenge).id,
+				data: id,
 				statusCode: 200
 			};
 		} else {
@@ -82,7 +84,6 @@ export default class ChallengeControl {
 						userId
 					);
 				}
-				console.log(new Date(challenge.lastUpdated));
 
 				if (userCredentials) {
 					this.streamingApi.setCredentials(
@@ -114,11 +115,9 @@ export default class ChallengeControl {
 									: null,
 							playedAt: track.played_at
 						};
-						console.log(trackInfo.track.name);
 						tracksInfo.push(trackInfo);
 					}
 
-					console.log(challenge.type);
 					const trackOrb = this.mapOrbTypes.get(challenge.type)(
 						tracksInfo
 					);
