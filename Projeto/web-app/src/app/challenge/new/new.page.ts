@@ -11,7 +11,7 @@ import { EndpointService } from 'src/app/musa-services/endpoint.service';
 export class NewChallengePage implements OnInit {
 
   challengeType: string;
-  challengeTime: string;
+  challengeTime: number;
 
   constructor(
     private navCtrl: NavController,
@@ -19,7 +19,7 @@ export class NewChallengePage implements OnInit {
     private endpointService: EndpointService,
     public alertController: AlertController) {
     this.challengeType = 'explorer';
-    this.challengeTime = '3600000';
+    this.challengeTime = 3600000;
   }
 
   ngOnInit() {
@@ -33,13 +33,15 @@ export class NewChallengePage implements OnInit {
     try {
       const challenge: any = await this.endpointService.newChallenge({
         type: this.challengeType,
-        time: this.challengeTime
+        finished: false,
+        startingTimestamp: Date.now(),
+        finishingTime: Date.now() + this.challengeTime,
+        lastUpdated: Date.now()
       });
-      this.router.navigateByUrl(`/challenge/view?id=${challenge.uuid}`);
+      this.router.navigateByUrl(`/challenge/view?id=${challenge.data}`);
     } catch (error) {
       this.presentErrorAlert();
     }
-
   }
 
   async presentErrorAlert() {
