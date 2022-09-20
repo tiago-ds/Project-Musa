@@ -14,4 +14,16 @@ export class ChallengeRepositoryFirebase
 	async createChallenge(challenge: Challenge): Promise<boolean> {
 		return this.firebaseApi.save(challenge, challenge.id);
 	}
+
+	async getChallenge(challengeId: string): Promise<Object> {
+		return this.firebaseApi.get(challengeId);
+	}
+
+	async updateChallenge(challenge: Challenge): Promise<boolean> {
+		return this.firebaseApi.update(challenge.id, challenge);
+	}
+
+	async deleteChallenge(challengeId: string): Promise<boolean> {
+		return this.firebaseApi.delete(challengeId);
+	}
 }

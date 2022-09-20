@@ -8,5 +8,5 @@ export interface Challenge {
 	finished: boolean;
 	startingTimestamp: Date;
 	finishingTime: Date;
-	lastUpdated: Date;
+	lastUpdated: number;
 }

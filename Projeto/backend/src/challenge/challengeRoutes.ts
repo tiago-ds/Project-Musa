@@ -18,5 +18,9 @@ export default class ChallengeRoutes implements IRoutes {
 		this.app.post(`/${this.baseRoute}`, (req, res, next) =>
 			this.challengeController.createChallenge(req, res, next)
 		);
+
+		this.app.get(`/${this.baseRoute}/:id`, (req, res, next) =>
+			this.challengeController.refreshChallenge(req, res, next)
+		);
 	}
 }

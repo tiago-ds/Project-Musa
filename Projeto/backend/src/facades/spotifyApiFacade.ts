@@ -2,7 +2,7 @@ import SpotifyWebApi from 'spotify-web-api-node';
 import {
 	AuthorizationResponse,
 	AuthorizationCodeGrantResponse,
-	RefreshAccessTokenResponse,
+	RefreshAccessTokenResponse
 } from '../auth/models/authCodeGrantResponse';
 import { IMusicStreamingComunication } from '../interfaces/musicStreamingComunication';
 
@@ -14,13 +14,13 @@ export default class SpotifyApiFacade implements IMusicStreamingComunication {
 		this.spotifyApi = new SpotifyWebApi({
 			clientId: process.env.SPOTIFY_CLIENT_ID,
 			clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-			redirectUri: process.env.SPOTIFY_REDIRECT_URI,
+			redirectUri: process.env.SPOTIFY_REDIRECT_URI
 		});
 		this.scopes = [
 			'user-read-recently-played',
 			'user-read-currently-playing',
 			'user-read-private',
-			'user-read-email',
+			'user-read-email'
 		];
 	}
 
@@ -53,5 +53,28 @@ export default class SpotifyApiFacade implements IMusicStreamingComunication {
 		this.spotifyApi.setAccessToken(accessToken);
 		this.spotifyApi.setRefreshToken(refreshToken);
 		return await this.spotifyApi.getMe();
+	}
+
+	async setCredentials(
+		accessToken: string,
+		refreshToken: string
+	): Promise<void> {
+		this.spotifyApi.setAccessToken(accessToken);
+		this.spotifyApi.setRefreshToken(refreshToken);
+	}
+
+	getTrack(trackId: string) {
+		return this.spotifyApi.getTrack(trackId);
+	}
+
+	getTrackFeatures(trackId: string) {
+		return this.spotifyApi.getAudioFeaturesForTrack(trackId);
+	}
+
+	getUserRecentlyPlayedTracks(limit: number, after: number) {
+		return this.spotifyApi.getMyRecentlyPlayedTracks({
+			limit: limit,
+			after: after
+		});
 	}
 }

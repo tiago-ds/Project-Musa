@@ -9,15 +9,18 @@ import UserCollection from '../../user/collection/userCollection';
 
 import { MusicServiceFactory } from '../../factories/musicServiceFactory';
 import { IMusicStreamingComunication } from '../../interfaces/musicStreamingComunication';
+import AuthCollection from '../collection/authCollection';
 
 export default class AuthControl {
 	streamingApi: IMusicStreamingComunication;
 	userCollection: UserCollection;
+	authCollection: AuthCollection;
 	musicServiceFactory: MusicServiceFactory = new MusicServiceFactory();
 
 	constructor() {
 		this.streamingApi = this.musicServiceFactory.create('spotify');
 		this.userCollection = new UserCollection();
+		this.authCollection = new AuthCollection();
 	}
 
 	async getAuthorizeUrl<T>(redirectUri: T): Promise<MusaResponse<string>> {
@@ -98,6 +101,11 @@ export default class AuthControl {
 		);
 
 		if (userFound) {
+			this.authCollection.updateCredentials(
+				credentialsLogin,
+				loginResponse.body.id
+			);
+
 			return {
 				data: loginResponse,
 				statusCode: 200,
@@ -105,6 +113,11 @@ export default class AuthControl {
 		} else if (loginResponse && !userFound) {
 			const userCreated = await this.userCollection.createUser(
 				loginResponse.body
+			);
+
+			await this.authCollection.createCredentials(
+				credentialsLogin,
+				loginResponse.body.id
 			);
 
 			if (userCreated) {

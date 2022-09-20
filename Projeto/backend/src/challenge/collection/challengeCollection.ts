@@ -9,4 +9,18 @@ export default class ChallengeCollection {
 	async createChallenge(challenge: Challenge): Promise<boolean> {
 		return await this.challengeRepository.createChallenge(challenge);
 	}
+
+	async getChallenge(challengeId: string): Promise<Challenge> {
+		return (await this.challengeRepository.getChallenge(
+			challengeId
+		)) as Challenge;
+	}
+
+	async updateChallenge(challenge: Challenge): Promise<boolean> {
+		return await this.challengeRepository.updateChallenge(challenge);
+	}
+
+	async deleteChallenge(challengeId: string): Promise<boolean> {
+		return await this.challengeRepository.deleteChallenge(challengeId);
+	}
 }

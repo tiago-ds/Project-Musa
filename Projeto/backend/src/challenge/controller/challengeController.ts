@@ -20,4 +20,15 @@ export default class ChallengeController {
 
 		res.status(response.statusCode).json(response.data);
 	}
+
+	async refreshChallenge(
+		req: Request,
+		res: Response,
+		next: NextFunction
+	): Promise<void> {
+		const challengeId = req.params.id;
+		const response = await this.facade.refreshChallenge(challengeId);
+
+		res.status(response.statusCode).json(response.data);
+	}
 }

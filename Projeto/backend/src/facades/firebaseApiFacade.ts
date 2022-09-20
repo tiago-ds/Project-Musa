@@ -27,7 +27,7 @@ export class FirebaseApiFacade<T> implements DatabaseCommunicationInterface {
 	}
 
 	async save(object: T, id: string): Promise<boolean> {
-		return (await await this.objectRef.doc(id).set(object)) != null;
+		return (await this.objectRef.doc(id).set(object)) != null;
 	}
 
 	async get(id: string): Promise<Object> {
@@ -38,9 +38,9 @@ export class FirebaseApiFacade<T> implements DatabaseCommunicationInterface {
 		field: string,
 		list: Array<string | number>
 	): Promise<Array<Object>> {
-		return await (
-			await this.objectRef.where(field, 'in', list).get()
-		).docs.map((doc) => doc.data());
+		return (await this.objectRef.where(field, 'in', list).get()).docs.map(
+			(doc) => doc.data()
+		);
 	}
 
 	async update(id: string, user: any): Promise<boolean> {
