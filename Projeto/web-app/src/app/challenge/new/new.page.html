@@ -1,18 +1,28 @@
 <ion-content class="blur-bg" [fullscreen]="true">
-  <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 flex flex-col justify-between">
-      <button class="uppercase text-sm text-left opacity-70" (click)="goBack()"><ion-icon name="chevron-back-outline" class="-mb-0.5"></ion-icon> Voltar</button>
-      <h1 class="text-3xl font-bold font-display tracking-tight sm:text-4xl">
-          <span>Novo desafio</span>
-      </h1>
+  <div
+    class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 flex flex-col justify-between"
+  >
+    <button class="uppercase text-sm text-left opacity-70" (click)="goBack()">
+      <ion-icon name="chevron-back-outline" class="-mb-0.5"></ion-icon> Voltar
+    </button>
+    <h1 class="text-3xl font-bold font-display tracking-tight sm:text-4xl">
+      <span>Novo desafio</span>
+    </h1>
   </div>
   <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8">
     <h1 class="font-display tracking-tight text-2xl">
       Personalize e crie um novo desafio.
     </h1>
-    <ion-list lines="none" mode="md" class="rounded-md shadow-lg bg-opacity-80 my-4">
+    <ion-list
+      lines="none"
+      mode="md"
+      class="rounded-md shadow-lg bg-opacity-80 my-4"
+    >
       <ion-radio-group [(ngModel)]="challengeType">
         <ion-list-header>
-          <ion-label class="text-2xl py-4 font-display">Qual o desafio?</ion-label>
+          <ion-label class="text-2xl py-4 font-display"
+            >Qual o desafio?</ion-label
+          >
         </ion-list-header>
 
         <ion-item class="ion-transparent">
@@ -34,11 +44,14 @@
         <ion-item class="ion-transparent" disabled>
           <ion-label>
             <h2>Orbe Criador de Tendências</h2>
-            <p>Você pontua caso o oponente ouça uma música ou artista que você já ouviu.</p>
+            <p>
+              Você pontua caso o oponente ouça uma música ou artista que você já
+              ouviu.
+            </p>
           </ion-label>
           <ion-radio slot="start" value="trendsetter"></ion-radio>
         </ion-item>
-    
+
         <ion-item class="ion-transparent" disabled>
           <ion-label>
             <h2>Orbe Desafiante</h2>
@@ -46,17 +59,24 @@
           </ion-label>
           <ion-radio slot="start" value="challenger"></ion-radio>
         </ion-item>
-
       </ion-radio-group>
     </ion-list>
 
-    <ion-list lines="none" mode="md" class="rounded-md shadow-lg bg-opacity-80 my-4">
+    <ion-list
+      lines="none"
+      mode="md"
+      class="rounded-md shadow-lg bg-opacity-80 my-4"
+    >
       <ion-radio-group [(ngModel)]="challengeTime">
         <ion-list-header>
-          <ion-label class="text-2xl py-4 font-display">Por quanto tempo?</ion-label>
+          <ion-label class="text-2xl py-4 font-display"
+            >Por quanto tempo?</ion-label
+          >
         </ion-list-header>
 
-        <p class="ion-padding-horizontal ion-padding-bottom">O desafio começa assim que a pessoa oponente aceitar.</p>
+        <p class="ion-padding-horizontal ion-padding-bottom">
+          O desafio começa assim que a pessoa oponente aceitar.
+        </p>
 
         <ion-item class="ion-transparent">
           <ion-label>1 hora</ion-label>
@@ -77,12 +97,42 @@
           <ion-label>12 horas</ion-label>
           <ion-radio slot="start" value="43200"></ion-radio>
         </ion-item>
-
       </ion-radio-group>
     </ion-list>
 
-    <ion-button (click)="createChallenge()" class="mt-4 my-16 normal-case font-display tracking-tight" expand="block" size="large">Criar desafio</ion-button>
+    <ion-modal (willDismiss)="onModalDismissed()">
+      <ng-template>
+        <ion-list
+          lines="none"
+          mode="md"
+          class="rounded-md shadow-lg bg-opacity-80 my-4"
+        >
+          <ion-list-header>
+            <ion-label class="text-2xl py-4 font-display"
+              >Deseja convidar um amigo?</ion-label
+            >
+          </ion-list-header>
+          <ion-item>
+            <ion-label>ID do amigo:</ion-label>
+            <ion-input #id></ion-input>
+            <ion-button
+              expand="block"
+              color="primary"
+              (click)="sendNotification(id.value)"
+            >
+              Enviar
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </ng-template>
+    </ion-modal>
 
+    <ion-button
+      (click)="createChallenge()"
+      class="mt-4 my-16 normal-case font-display tracking-tight"
+      expand="block"
+      size="large"
+      >Criar desafio</ion-button
+    >
   </div>
-  </ion-content>
-  
+</ion-content>

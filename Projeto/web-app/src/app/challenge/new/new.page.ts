@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, IonModal, NavController } from '@ionic/angular';
 import { EndpointService } from 'src/app/musa-services/endpoint.service';
 import { ChallengeService } from 'src/app/musa-services/challenge.service';
+import { NotificationService } from '../../musa-services/notification.service';
 
 @Component({
   selector: 'app-new',
@@ -10,14 +11,17 @@ import { ChallengeService } from 'src/app/musa-services/challenge.service';
   styleUrls: ['./new.page.scss'],
 })
 export class NewChallengePage implements OnInit {
+  @ViewChild(IonModal) modal: IonModal;
   challengeType: string;
   challengeTime: number;
+  challenge;
 
   constructor(
     private navCtrl: NavController,
     private router: Router,
     private endpointService: EndpointService,
     private challengeService: ChallengeService,
+    private notificationService: NotificationService,
     public alertController: AlertController
   ) {
     this.challengeType = 'explorer';
@@ -32,14 +36,22 @@ export class NewChallengePage implements OnInit {
 
   async createChallenge() {
     try {
-      const challenge: any = await this.challengeService.createChallenge(
+      this.challenge = await this.challengeService.createChallenge(
         this.challengeType,
         this.challengeTime
       );
-      this.router.navigateByUrl(`/challenge/view?id=${challenge}`);
+      this.modal.present();
     } catch (error) {
       this.presentErrorAlert();
     }
+  }
+
+  onModalDismissed() {
+    this.router.navigateByUrl(`/challenge/view?id=${this.challenge.id}`);
+  }
+
+  sendNotification(userId) {
+    this.notificationService.sendNotification(userId, this.challenge);
   }
 
   async presentErrorAlert() {

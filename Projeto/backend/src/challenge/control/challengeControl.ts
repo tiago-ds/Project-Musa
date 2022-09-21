@@ -49,7 +49,10 @@ export default class ChallengeControl {
 
 		if (challengeCreated) {
 			return {
-				data: id,
+				data: {
+					...challenge,
+					id
+				},
 				statusCode: 200
 			};
 		} else {
@@ -62,6 +65,7 @@ export default class ChallengeControl {
 
 	async refreshChallenge(id: string): Promise<MusaResponse<Challenge>> {
 		let challenge = await this.challengeCollection.getChallenge(id);
+		let result;
 		console.log(challenge);
 
 		if (challenge) {
@@ -94,7 +98,7 @@ export default class ChallengeControl {
 					const userPlayedTracks = (
 						await this.streamingApi.getUserRecentlyPlayedTracks(
 							50,
-							challenge.lastUpdated
+							challenge.lastUpdated - 60 * 1000
 						)
 					)?.body;
 
@@ -139,25 +143,24 @@ export default class ChallengeControl {
 								name: name
 							}
 						},
-						lastUpdated: new Date().getTime() - 60 * 1000
+						lastUpdated: new Date().getTime()
 					};
 
-					const result: boolean =
-						await this.challengeCollection.updateChallenge(
-							challenge
-						);
-					if (result) {
-						return {
-							data: challenge,
-							statusCode: 200
-						};
-					} else {
-						return {
-							data: null,
-							statusCode: 400
-						};
-					}
+					result = await this.challengeCollection.updateChallenge(
+						challenge
+					);
 				}
+			}
+			if (result) {
+				return {
+					data: challenge,
+					statusCode: 200
+				};
+			} else {
+				return {
+					data: null,
+					statusCode: 400
+				};
 			}
 		} else {
 			return {
