@@ -16,6 +16,11 @@ export default class UserRoutes implements IRoutes {
 
 	initializeRoutes() {
 		this.app.get(
+			`/${this.baseRoute}/me`,
+			async (req, res, next) =>
+				await this.userController.getMe(req, res, next)
+		);
+		this.app.get(
 			`/${this.baseRoute}`,
 			async (req, res, next) =>
 				await this.userController.getUsers(req, res, next)

@@ -16,9 +16,55 @@
       <span class="font-bold">{{ userService.userData.display_name }}</span>
       <span>!</span>
     </h1>
-    <ion-avatar>
-      <img [src]="userService.userData.images[0].url" />
-    </ion-avatar>
+    <div>
+      <ion-avatar (click)="openModal()">
+        <img [src]="userService.userData.images[0].url" />
+      </ion-avatar>
+
+      <ion-badge *ngIf="notifications.length" color="primary"
+        >{{ notifications.length }}</ion-badge
+      >
+      <ion-modal #modal trigger="open-modal">
+        <ng-template>
+          <ion-header>
+            <ion-toolbar>
+              <ion-title>Notificações</ion-title>
+              <ion-buttons slot="end">
+                <ion-button (click)="closeModal()">Fechar</ion-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content>
+            <ion-list lines="none">
+              <ion-item
+                *ngFor="let item of notifications"
+                button="true"
+                detail="false"
+                (click)="modal.dismiss()"
+              >
+                <ion-grid>
+                  <ion-row class="ion-padding">
+                    <p>
+                      <ion-text>{{item.message}}</ion-text>
+                    </p>
+                  </ion-row>
+                  <ion-row class="ion-padding">
+                    <ion-button (click)="readNotification(item.id)"
+                      >Aceitar</ion-button
+                    >
+                    <ion-button
+                      (click)="readNotification(item.id)"
+                      color="danger"
+                      >Recusar</ion-button
+                    >
+                  </ion-row>
+                </ion-grid>
+              </ion-item>
+            </ion-list>
+          </ion-content>
+        </ng-template>
+      </ion-modal>
+    </div>
   </div>
 
   <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8">

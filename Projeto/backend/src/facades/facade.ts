@@ -70,8 +70,16 @@ export class Facade {
 		return await this.challengeControl.refreshChallenge(challengeId);
 	}
 
+	async getMe(access_token: string) {
+		return await this.userControl.getMe(access_token);
+	}
+
 	async joinChallenge(challengeId: string, userId: string, userName: string) {
-		return await this.challengeControl.joinChallenge(challengeId, userId, userName);
+		return await this.challengeControl.joinChallenge(
+			challengeId,
+			userId,
+			userName
+		);
 	}
 }
 

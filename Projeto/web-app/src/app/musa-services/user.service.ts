@@ -19,13 +19,20 @@ export class UserService {
     this.baseRoute = 'user';
   }
 
-  async getUser(id: string) {
+  async getMe() {
     try {
+      const credentials = await this.storage.get('user-credentials');
       const request = await this.http
-        .get(`${environment.apiUrl}/${this.baseRoute}/${id}`)
+        .get(`${environment.apiUrl}/${this.baseRoute}/me`, {
+          headers: {
+            Authorization: `${credentials.access_token}`,
+          },
+        })
         .toPromise();
 
       return request;
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

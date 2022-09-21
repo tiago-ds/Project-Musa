@@ -10,6 +10,17 @@ export default class UserController {
 		this.facade = FacadeInstance;
 	}
 
+	async getMe(
+		req: Request,
+		res: Response,
+		next: NextFunction
+	): Promise<void> {
+		const access_token = req.headers.authorization;
+		const response = await this.facade.getMe(access_token);
+
+		res.status(response.statusCode).json(response.data);
+	}
+
 	async getUsers(
 		req: Request,
 		res: Response,

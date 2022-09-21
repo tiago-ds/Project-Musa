@@ -1,12 +1,38 @@
 import UserCollection from '../collection/userCollection';
 import { User } from '../models/User';
 import { MusaResponse } from '../../models/Response';
+import { MusicServiceFactory } from '../../factories/musicServiceFactory';
+import SpotifyApiFacade from '../../facades/spotifyApiFacade';
 
 export default class UserControl {
 	userCollection: UserCollection;
+	musicServiceFactory = new MusicServiceFactory();
+	musicStreamingApi: SpotifyApiFacade;
 
 	constructor() {
 		this.userCollection = new UserCollection();
+		this.musicStreamingApi = this.musicServiceFactory.create('spotify');
+	}
+
+	async getMe(access_token: string): Promise<MusaResponse<User>> {
+		const spotifyUser = (
+			await this.musicStreamingApi.getProfileInfo(access_token, null)
+		).body;
+		const user = {
+			...(await this.userCollection.getUser(spotifyUser.id)),
+			...spotifyUser
+		};
+		if (user) {
+			return {
+				data: user,
+				statusCode: 200
+			};
+		} else {
+			return {
+				data: null,
+				statusCode: 404
+			};
+		}
 	}
 
 	async getUser<T>(userId: T): Promise<MusaResponse<User>> {
@@ -17,12 +43,12 @@ export default class UserControl {
 		if (user) {
 			return {
 				data: user,
-				statusCode: 200,
+				statusCode: 200
 			};
 		} else {
 			return {
 				data: null,
-				statusCode: 404,
+				statusCode: 404
 			};
 		}
 	}
@@ -35,12 +61,12 @@ export default class UserControl {
 		if (users) {
 			return {
 				data: users,
-				statusCode: 200,
+				statusCode: 200
 			};
 		} else {
 			return {
 				data: null,
-				statusCode: 404,
+				statusCode: 404
 			};
 		}
 	}
@@ -53,12 +79,12 @@ export default class UserControl {
 		if (userCreated) {
 			return {
 				data: (user as unknown as User).id,
-				statusCode: 200,
+				statusCode: 200
 			};
 		} else {
 			return {
 				data: null,
-				statusCode: 404,
+				statusCode: 404
 			};
 		}
 	}
@@ -73,12 +99,12 @@ export default class UserControl {
 		if (userUpdated) {
 			return {
 				data: userUpdated,
-				statusCode: 200,
+				statusCode: 200
 			};
 		} else {
 			return {
 				data: null,
-				statusCode: 404,
+				statusCode: 404
 			};
 		}
 	}
@@ -91,12 +117,12 @@ export default class UserControl {
 		if (userDeleted) {
 			return {
 				data: userDeleted,
-				statusCode: 200,
+				statusCode: 200
 			};
 		} else {
 			return {
 				data: null,
-				statusCode: 404,
+				statusCode: 404
 			};
 		}
 	}
