@@ -139,13 +139,15 @@ export default class ChallengeControl {
 								name: name
 							}
 						},
-						lastUpdated: new Date().getTime()
+						lastUpdated: new Date().getTime() - 60 * 1000
 					};
 
-					const result: boolean = await this.challengeCollection.updateChallenge(challenge);
-					if(result) {
+					const result: boolean =
+						await this.challengeCollection.updateChallenge(
+							challenge
+						);
+					if (result) {
 						return {
-							
 							data: challenge,
 							statusCode: 200
 						};
@@ -153,7 +155,7 @@ export default class ChallengeControl {
 						return {
 							data: null,
 							statusCode: 400
-						}
+						};
 					}
 				}
 			}
@@ -165,14 +167,24 @@ export default class ChallengeControl {
 		}
 	}
 
-	async joinChallenge(challengeId: string, userId: string, userName: string): Promise<MusaResponse<Challenge>> {
-		let challenge: Challenge = await this.challengeCollection.getChallenge(challengeId);
+	async joinChallenge(
+		challengeId: string,
+		userId: string,
+		userName: string
+	): Promise<MusaResponse<Challenge>> {
+		let challenge: Challenge = await this.challengeCollection.getChallenge(
+			challengeId
+		);
 		if (challenge) {
-			if(Object.keys(challenge.challengeData).find((it: string) => it === userId)) {
+			if (
+				Object.keys(challenge.challengeData).find(
+					(it: string) => it === userId
+				)
+			) {
 				return {
 					data: challenge,
 					statusCode: 200
-				}
+				};
 			}
 			challenge = {
 				...challenge,
@@ -183,28 +195,28 @@ export default class ChallengeControl {
 						name: userName,
 						points: 0
 					}
-				},
-			}
-			
-			const result: boolean = await this.challengeCollection.updateChallenge(challenge);
-			
-			if(result) {
+				}
+			};
+
+			const result: boolean =
+				await this.challengeCollection.updateChallenge(challenge);
+
+			if (result) {
 				return {
 					data: challenge,
 					statusCode: 200
-				}
+				};
 			} else {
 				return {
 					data: null,
 					statusCode: 400
-				}
+				};
 			}
-		}
-		else {
+		} else {
 			return {
 				data: null,
 				statusCode: 400
-			}
+			};
 		}
 	}
 }
