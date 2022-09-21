@@ -14,9 +14,19 @@
     <ion-avatar>
       <img [src]="userService.userData.images[0].url" />
     </ion-avatar>
-    <h1 class="text-3xl pl-8 font-display font-bold tracking-tight sm:text-4xl">
-      {{ userService.userData.display_name }}
-    </h1>
+    <div>
+      <h1
+        class="text-3xl pl-8 font-display font-bold tracking-tight sm:text-4xl"
+      >
+        {{ userService.userData.display_name }}
+      </h1>
+      <p class="text-base pl-8 font-display font-bold tracking-tight">
+        ID {{ userService.userData.id }}
+        <button ion-button icon-only (click)="copyId()">
+          <ion-icon name="copy-outline"></ion-icon>
+        </button>
+      </p>
+    </div>
   </div>
   <div class="px-4">
     <ion-item class="py-2" detail="false" button="true" color="primary">

@@ -19,8 +19,12 @@ export class MePage implements OnInit {
 
   ngOnInit() {
     this.userService.getMe().then((data) => {
-      data = this.userData;
+      this.userData = data;
     });
+  }
+
+  async copyId() {
+    await navigator.clipboard.writeText(this.userData.id);
   }
 
   logout() {
