@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, NavController } from '@ionic/angular';
 import { EndpointService } from 'src/app/musa-services/endpoint.service';
+import { ChallengeService } from 'src/app/musa-services/challenge.service';
 
 @Component({
   selector: 'app-new',
@@ -11,15 +12,16 @@ import { EndpointService } from 'src/app/musa-services/endpoint.service';
 export class NewChallengePage implements OnInit {
 
   challengeType: string;
-  challengeTime: string;
+  challengeTime: number;
 
   constructor(
     private navCtrl: NavController,
     private router: Router,
     private endpointService: EndpointService,
+    private challengeService: ChallengeService,
     public alertController: AlertController) {
     this.challengeType = 'explorer';
-    this.challengeTime = '3600000';
+    this.challengeTime = 3600000;
   }
 
   ngOnInit() {
@@ -31,15 +33,11 @@ export class NewChallengePage implements OnInit {
 
   async createChallenge() {
     try {
-      const challenge: any = await this.endpointService.newChallenge({
-        type: this.challengeType,
-        time: this.challengeTime
-      });
-      this.router.navigateByUrl(`/challenge/view?id=${challenge.uuid}`);
+      const challenge: any = await this.challengeService.createChallenge(this.challengeType, this.challengeTime);
+      this.router.navigateByUrl(`/challenge/view?id=${challenge}`);
     } catch (error) {
       this.presentErrorAlert();
     }
-
   }
 
   async presentErrorAlert() {

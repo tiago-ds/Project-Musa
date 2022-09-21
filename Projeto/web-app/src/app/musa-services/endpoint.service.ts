@@ -52,10 +52,12 @@ export class EndpointService {
       const user = await this.storage.get('user');
       const request = await this.http
         .post(`${environment.apiUrl}/challenge`, {
-          credentials: user.credentials,
-          userId: user.id,
-          id: new Date().toString(),
-          challengeRequest,
+          ...challengeRequest,
+          challengeData: {
+            name: user.id,
+            points: 0,
+            listenedSongs: []
+          }
         })
         .toPromise();
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
+import { ChallengeService } from 'src/app/musa-services/challenge.service';
 import { EndpointService } from 'src/app/musa-services/endpoint.service';
 import { AlertController } from '@ionic/angular';
 
@@ -16,7 +17,7 @@ export class JoinChallengePage implements OnInit {
   constructor(
     private navCtrl: NavController,
     private router: Router,
-    private endpointService: EndpointService,
+    private challengeService: ChallengeService,
     public alertController: AlertController) {
     this.challengeUuid = '';
   }
@@ -30,7 +31,7 @@ export class JoinChallengePage implements OnInit {
 
   async joinChallenge() {
     try {
-      const challenge: any = await this.endpointService.joinChallenge(this.challengeUuid);
+      const challenge: any = await this.challengeService.joinChallenge(this.challengeUuid);
       this.router.navigateByUrl(`/challenge/view?id=${challenge.uuid}`);
     } catch (error) {
       if (error.error.error === 'Error: ChallengedIsChallenger') {
