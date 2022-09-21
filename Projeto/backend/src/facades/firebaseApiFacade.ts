@@ -20,9 +20,9 @@ export class FirebaseApiFacade<T> implements DatabaseCommunicationInterface {
 			credential: firebaseAdmin.credential.cert({
 				projectId: process.env.FIREBASE_PROJECT_ID,
 				clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-				privateKey: process.env.FIREBASE_PRIVATE_KEY,
+				privateKey: process.env.FIREBASE_PRIVATE_KEY
 			}),
-			databaseURL: 'musa-d0f4f.firebaseio.com',
+			databaseURL: 'musa-d0f4f.firebaseio.com'
 		});
 	}
 
@@ -49,5 +49,49 @@ export class FirebaseApiFacade<T> implements DatabaseCommunicationInterface {
 
 	async delete(id: string): Promise<boolean> {
 		return (await this.objectRef.doc(id).delete()) != null;
+	}
+
+	async getSubCollection(
+		id: string,
+		subCollection: string
+	): Promise<Array<Object>> {
+		const snapshot = await this.objectRef
+			.doc(id)
+			.collection(subCollection)
+			.get();
+		const objects = [];
+		snapshot.forEach((doc) => {
+			objects.push(doc.data());
+		});
+		return objects;
+	}
+
+	async saveSubCollection(
+		id: string,
+		subCollection: string,
+		subCollectionId: string,
+		object: any
+	): Promise<boolean> {
+		return (
+			(await this.objectRef
+				.doc(id)
+				.collection(subCollection)
+				.doc(subCollectionId)
+				.set(object)) != null
+		);
+	}
+
+	async deleteSubCollection(
+		id: string,
+		subCollection: string,
+		subCollectionId: string
+	): Promise<boolean> {
+		return (
+			(await this.objectRef
+				.doc(id)
+				.collection(subCollection)
+				.doc(subCollectionId)
+				.delete()) != null
+		);
 	}
 }
