@@ -1,75 +1,84 @@
 <ion-content class="blur-bg" [fullscreen]="true">
   <ng-container *ngIf="challenge && challenge.startingTimestamp">
-    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 flex flex-col justify-between">
-        <button class="uppercase text-sm text-left opacity-70" (click)="goBack()"><ion-icon name="chevron-back-outline" class="-mb-0.5"></ion-icon> Voltar</button>
-        <span class="block mt-4 font-display uppercase font-bold tracking-widest">Orbe {{ challengeTypeDisplayName[challenge.type] }}</span>
-        <h1 class="text-3xl font-bold font-display tracking-tight sm:text-4xl">
-            <span>Desafio</span>
-        </h1>
-  
-        <span class="block mt-2">{{ startingTimeDisplayName }} • {{ endingTimeDisplayName }}</span>
-        <span class="block mt-2">ID: <span class="font-bold">{{ challenge.uuid }}</span></span>
+    <div
+      class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 flex flex-col justify-between"
+    >
+      <button class="uppercase text-sm text-left opacity-70" (click)="goBack()">
+        <ion-icon name="chevron-back-outline" class="-mb-0.5"></ion-icon> Voltar
+      </button>
+      <span class="block mt-4 font-display uppercase font-bold tracking-widest"
+        >Orbe {{ challengeTypeDisplayName[challenge.type] }}</span
+      >
+      <h1 class="text-3xl font-bold font-display tracking-tight sm:text-4xl">
+        <span>Desafio</span>
+      </h1>
+
+      <span class="block mt-2"
+        >{{ startingTimeDisplayName }} • {{ endingTimeDisplayName }}</span
+      >
+      <span class="block mt-2"
+        >ID: <span class="font-bold">{{ challenge.uuid }}</span></span
+      >
     </div>
-  
-    <div class="max-w-7xl mx-auto flex justify-between font-display text-xl">
-      <span class="py-2 px-4 sm:px-6 lg:px-8">{{ challenge.challengerData.name }}</span>
-      <span class="py-2 px-4 sm:px-6 lg:px-8">{{ challenge.challengedData.name }}</span>
-    </div>
-  
-    <div class="flex text-8xl font-display font-bold py-4">
-      <div class="h-64 inline-flex bg-vibrantblue bg-opacity-50 items-center justify-center" [style.width.%]="challengerBarSize"><p class="text-center">{{ challenge.challengerData.points }}</p></div>
-      <div class="h-64 inline-flex bg-coral bg-opacity-50 items-center justify-center" [style.width.%]="challengedBarSize"><p class="text-center">{{ challenge.challengedData.points }}</p></div>
-    </div>
-  
+
     <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
       <h2 class="uppercase font-bold mb-4">Histórico</h2>
       <div class="flex flex-col w-full">
         <ng-container *ngFor="let song of allHistory">
-        <div *ngIf="song.userName === challenge.challenger" class="self-start py-3 flex flex-row">
-          <span class="font-display font-bold text-6xl">{{ song.points }}</span>
-          <div class="ml-4">
-            <p><strong>{{ challenge.challengerData.name }}</strong> pontuou</p>
-            <p class="text-2xl mt-0.5 font-display">{{ song.artist }} - <strong>{{ song.title }}</strong></p>
+          <div *ngIf="song.userName" class="self-start py-3 flex flex-row">
+            <span class="font-display font-bold text-6l"
+              ><strong>{{ song.userName }}</strong> pontuou {{ song.points
+              }}</span
+            >
+            <div class="ml-4">
+              <p class="text-2xl mt-0.5 font-display">
+                {{ song.artist }} - <strong>{{ song.title }}</strong>
+              </p>
+            </div>
           </div>
-        </div>
-  
-        <div *ngIf="song.userName === challenge.challenged" class="self-end py-3 flex flex-row">
-          <div class="mr-4 text-right">
-            <p><strong>{{ challenge.challengedData.name }}</strong> pontuou</p>
-            <p class="text-2xl mt-0.5 font-display">{{ song.artist }} - <strong>{{ song.title }}</strong></p>
-          </div>
-          <span class="font-display font-bold text-6xl">{{ song.points }}</span>
-        </div>
         </ng-container>
       </div>
     </div>
   </ng-container>
 
   <ng-container *ngIf="!challenge">
-    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 flex h-screen items-center justify-between">
-      <h1 class="text-4xl text-center m-auto font-display font-bold tracking-tight">
+    <div
+      class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 flex h-screen items-center justify-between"
+    >
+      <h1
+        class="text-4xl text-center m-auto font-display font-bold tracking-tight"
+      >
         <ion-spinner name="circles"></ion-spinner>
         <p>Um momento enquanto carregamos os dados do desafio...</p>
       </h1>
     </div>
   </ng-container>
-  
-  <ng-container *ngIf="challenge && !challenge.startingTimestamp">
-    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 flex flex-col justify-between">
-        <button class="uppercase text-sm text-left opacity-70" (click)="goBack()"><ion-icon name="chevron-back-outline" class="-mb-0.5"></ion-icon> Voltar</button>
-        <span class="block mt-4 font-display uppercase font-bold tracking-widest">Orbe {{ challengeTypeDisplayName[challenge.type] }}</span>
-        <h1 class="text-3xl font-bold font-display tracking-tight sm:text-4xl">
-            <span>Desafio</span>
-        </h1>
 
-        <span class="block mt-2"> {{ challengeTimeDisplayName[challenge.time] }} • esperando oponente</span>
-        <span class="block mt-2">ID: <span class="font-bold">{{ challenge.uuid }}</span></span>
+  <ng-container *ngIf="challenge && !challenge.startingTimestamp">
+    <div
+      class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 flex flex-col justify-between"
+    >
+      <button class="uppercase text-sm text-left opacity-70" (click)="goBack()">
+        <ion-icon name="chevron-back-outline" class="-mb-0.5"></ion-icon> Voltar
+      </button>
+      <span class="block mt-4 font-display uppercase font-bold tracking-widest"
+        >Orbe {{ challengeTypeDisplayName[challenge.type] }}</span
+      >
+      <h1 class="text-3xl font-bold font-display tracking-tight sm:text-4xl">
+        <span>Desafio</span>
+      </h1>
+
+      <span class="block mt-2">
+        {{ challengeTimeDisplayName[challenge.time] }} • esperando
+        oponente</span
+      >
+      <span class="block mt-2"
+        >ID: <span class="font-bold">{{ challenge.id }}</span></span
+      >
     </div>
 
     <div class="max-w-7xl mx-auto flex justify-between font-display text-xl">
-      <span class="py-2 px-4 sm:px-6 lg:px-8">{{ challenge.challengerData.name }}</span>
       <span class="py-2 px-4 sm:px-6 lg:px-8"></span>
     </div>
   </ng-container>
-
 </ion-content>

@@ -68,7 +68,7 @@ export default class ChallengeControl {
 			for (const userId of Object.keys(challenge.challengeData)) {
 				let userCredentials =
 					await this.credentialsCollection.getCredentials(userId);
-				if (userCredentials.expires_at > new Date().getTime()) {
+				if (userCredentials.expires_at < new Date().getTime()) {
 					userCredentials = {
 						...(
 							await this.streamingApi.refreshAccessToken(
