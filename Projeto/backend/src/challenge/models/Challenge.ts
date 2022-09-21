@@ -6,7 +6,7 @@ export interface Challenge {
 	challengeData: Map<string, ChallengeUserData>;
 	type: ChallengeType;
 	finished: boolean;
-	startingTimestamp: Date;
-	finishingTime: Date;
+	startingTimestamp: number;
+	finishingTime: number;
 	lastUpdated: number;
 }

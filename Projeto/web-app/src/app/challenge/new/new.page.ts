@@ -10,7 +10,6 @@ import { ChallengeService } from 'src/app/musa-services/challenge.service';
   styleUrls: ['./new.page.scss'],
 })
 export class NewChallengePage implements OnInit {
-
   challengeType: string;
   challengeTime: number;
 
@@ -19,13 +18,13 @@ export class NewChallengePage implements OnInit {
     private router: Router,
     private endpointService: EndpointService,
     private challengeService: ChallengeService,
-    public alertController: AlertController) {
+    public alertController: AlertController
+  ) {
     this.challengeType = 'explorer';
-    this.challengeTime = 3600000;
+    this.challengeTime = 3600;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   goBack() {
     this.navCtrl.navigateBack('/home');
@@ -33,7 +32,10 @@ export class NewChallengePage implements OnInit {
 
   async createChallenge() {
     try {
-      const challenge: any = await this.challengeService.createChallenge(this.challengeType, this.challengeTime);
+      const challenge: any = await this.challengeService.createChallenge(
+        this.challengeType,
+        this.challengeTime
+      );
       this.router.navigateByUrl(`/challenge/view?id=${challenge}`);
     } catch (error) {
       this.presentErrorAlert();
@@ -48,17 +50,17 @@ export class NewChallengePage implements OnInit {
         {
           text: 'Fechar',
           role: 'cancel',
-        }, {
+        },
+        {
           text: 'Sair e fazer login',
           handler: () => {
             this.endpointService.logout();
             this.router.navigate(['login']);
-          }
-        }
-      ]
+          },
+        },
+      ],
     });
 
     await alert.present();
   }
-
 }

@@ -76,17 +76,12 @@ export class ViewChallengePage implements OnInit {
           { locale: ptBR }
         )}`;
         this.endingTimeDisplayName = `${
-          Number(this.challenge.startingTimestamp) +
-            Number(this.challenge.time) >
-          Date.now()
+          Number(this.challenge.finishingTime) > Date.now()
             ? 'termina'
             : 'terminou'
-        } ${formatDistance(
-          Date.now(),
-          Number(this.challenge.startingTimestamp) +
-            Number(this.challenge.time),
-          { locale: ptBR }
-        )}`;
+        } ${formatDistance(Date.now(), Number(this.challenge.finishingTime), {
+          locale: ptBR,
+        })}`;
 
         this.allHistory.sort((a, b) => a.timestamp - b.timestamp);
       } catch (e) {

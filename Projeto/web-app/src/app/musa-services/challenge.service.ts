@@ -7,7 +7,6 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-
 export class ChallengeService {
   private baseRoute: string;
   private credentials: SpotifyCredentials;
@@ -19,7 +18,7 @@ export class ChallengeService {
     });
   }
 
-  async createChallenge(challengeType, challengeTime) {
+  async createChallenge(challengeType, challengeTime: number) {
     try {
       const user = await this.storage.get('user');
       const request = await this.http
@@ -27,15 +26,15 @@ export class ChallengeService {
           type: challengeType,
           finished: false,
           startingTimestamp: Date.now(),
-          finishingTime: Date.now() + challengeTime,
+          finishingTime: new Date().getTime() + challengeTime * 1000,
           lastUpdated: Date.now(),
           challengeData: {
             [user.id]: {
               name: user.display_name,
               points: 0,
-              listenedSongs: []
-            }
-          }
+              listenedSongs: [],
+            },
+          },
         })
         .toPromise();
       return request;
@@ -44,10 +43,10 @@ export class ChallengeService {
 
   async viewChallenge(challengeUuid) {
     const request = await this.http
-    .get(`${environment.apiUrl}/challenge/${challengeUuid}`)
-    .toPromise();
+      .get(`${environment.apiUrl}/challenge/${challengeUuid}`)
+      .toPromise();
 
-  return request;
+    return request;
   }
 
   async joinChallenge(challengeUuid) {
