@@ -49,12 +49,11 @@ export class ChallengeService {
     return request;
   }
 
-  async joinChallenge(challengeUuid) {
+  async joinChallenge(challengeUuid: string) {
     const user = await this.storage.get('user');
     const request = await this.http
-      .post(`${environment.apiUrl}/challenge/${challengeUuid}/join`, {
-        credentials: user.credentials,
-        userId: user.id,
+      .put(`${environment.apiUrl}/challenge/${challengeUuid}`, {
+        user: user
       })
       .toPromise();
 

@@ -69,6 +69,10 @@ export class Facade {
 	async refreshChallenge(challengeId: string) {
 		return await this.challengeControl.refreshChallenge(challengeId);
 	}
+
+	async joinChallenge(challengeId: string, userId: string, userName: string) {
+		return await this.challengeControl.joinChallenge(challengeId, userId, userName);
+	}
 }
 
 export const FacadeInstance = Facade.Instance;

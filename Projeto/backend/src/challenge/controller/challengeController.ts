@@ -31,4 +31,18 @@ export default class ChallengeController {
 
 		res.status(response.statusCode).json(response.data);
 	}
+
+	async joinChallenge(
+		req: Request,
+		res: Response,
+		next: NextFunction
+	): Promise<void> {
+		const challengeId: string = req.params.id;
+		const userId: string = req.body.user.id;
+		const userName: string = req.body.user.display_name;
+		
+		const response = await this.facade.joinChallenge(challengeId, userId, userName);
+
+		res.status(response.statusCode).json(response.data);
+	}
 }

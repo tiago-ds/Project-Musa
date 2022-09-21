@@ -32,7 +32,7 @@ export class JoinChallengePage implements OnInit {
   async joinChallenge() {
     try {
       const challenge: any = await this.challengeService.joinChallenge(this.challengeUuid);
-      this.router.navigateByUrl(`/challenge/view?id=${challenge.uuid}`);
+      this.router.navigateByUrl(`/challenge/view?id=${challenge.id}`);
     } catch (error) {
       if (error.error.error === 'Error: ChallengedIsChallenger') {
         this.presentSameUserAlert();

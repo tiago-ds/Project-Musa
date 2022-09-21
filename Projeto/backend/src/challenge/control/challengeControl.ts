@@ -142,11 +142,19 @@ export default class ChallengeControl {
 						lastUpdated: new Date().getTime()
 					};
 
-					await this.challengeCollection.updateChallenge(challenge);
-					return {
-						data: challenge,
-						statusCode: 200
-					};
+					const result: boolean = await this.challengeCollection.updateChallenge(challenge);
+					if(result) {
+						return {
+							
+							data: challenge,
+							statusCode: 200
+						};
+					} else {
+						return {
+							data: null,
+							statusCode: 400
+						}
+					}
 				}
 			}
 		} else {
@@ -154,6 +162,49 @@ export default class ChallengeControl {
 				data: null,
 				statusCode: 404
 			};
+		}
+	}
+
+	async joinChallenge(challengeId: string, userId: string, userName: string): Promise<MusaResponse<Challenge>> {
+		let challenge: Challenge = await this.challengeCollection.getChallenge(challengeId);
+		if (challenge) {
+			if(Object.keys(challenge.challengeData).find((it: string) => it === userId)) {
+				return {
+					data: challenge,
+					statusCode: 200
+				}
+			}
+			challenge = {
+				...challenge,
+				challengeData: {
+					...challenge.challengeData,
+					[userId]: {
+						listenedSongs: [],
+						name: userName,
+						points: 0
+					}
+				},
+			}
+			
+			const result: boolean = await this.challengeCollection.updateChallenge(challenge);
+			
+			if(result) {
+				return {
+					data: challenge,
+					statusCode: 200
+				}
+			} else {
+				return {
+					data: null,
+					statusCode: 400
+				}
+			}
+		}
+		else {
+			return {
+				data: null,
+				statusCode: 400
+			}
 		}
 	}
 }
