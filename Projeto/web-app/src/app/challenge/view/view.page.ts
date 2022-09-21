@@ -1,7 +1,7 @@
+import { ChallengeService } from 'src/app/musa-services/challenge.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
-import { EndpointService } from 'src/app/musa-services/endpoint.service';
 import { formatRelative } from 'date-fns';
 import { formatDistance } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -37,7 +37,7 @@ export class ViewChallengePage implements OnInit {
   constructor(
     private navCtrl: NavController,
     private route: ActivatedRoute,
-    private endpointService: EndpointService
+    private challengeService: ChallengeService
   ) {}
 
   ngOnInit() {
@@ -48,7 +48,7 @@ export class ViewChallengePage implements OnInit {
       }
 
       try {
-        this.challenge = await this.endpointService.viewChallenge(params.id);
+        this.challenge = await this.challengeService.viewChallenge(params.id);
 
         if (!this.challenge.startingTimestamp) {
           return;
