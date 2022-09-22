@@ -1,10 +1,10 @@
 import UserCollection from '../collection/userCollection';
 import { User } from '../models/User';
-import { MusaResponse } from '../../models/Response';
-import { MusicServiceFactory } from '../../factories/musicServiceFactory';
-import SpotifyApiFacade from '../../facades/spotifyApiFacade';
+import { MusaResponse } from '../models/Response';
+import { MusicServiceFactory } from '../factories/musicServiceFactory';
+import SpotifyApiFacade from '../facades/spotifyApiFacade';
 
-export default class UserControl {
+export class UserService {
 	userCollection: UserCollection;
 	musicServiceFactory = new MusicServiceFactory();
 	musicStreamingApi: SpotifyApiFacade;

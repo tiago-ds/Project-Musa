@@ -14,7 +14,7 @@ const authRoutes = new AuthRoutes(app);
 
 app.listen(process.env.PORT || 5000, () => {
 	console.log(
-		`O servidor de autenticação está escutando em http://localhost:${
+		`O serviço de autenticação está escutando em http://localhost:${
 			process.env.PORT || 5000
 		}`
 	);

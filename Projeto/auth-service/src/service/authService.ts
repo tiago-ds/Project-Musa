@@ -8,6 +8,7 @@ import { Credentials } from '../models/Credentials';
 import { MusicServiceFactory } from '../factories/musicServiceFactory';
 import { IMusicStreamingComunication } from '../interfaces/musicStreamingComunication';
 import AuthCollection from '../collection/authCollection';
+import axios from 'axios';
 
 export default class AuthService {
 	streamingApi: IMusicStreamingComunication;
@@ -107,10 +108,9 @@ export default class AuthService {
 			credentialsLogin.refresh_token
 		);
 
-		// const userFound = await this.userCollection.getUser(
-		// 	loginResponse.body.id
-		// );
-		const userFound = null;
+		const userFound = await axios.get(
+			`http://localhost:5008/${loginResponse.body.id}`
+		);
 
 		if (userFound) {
 			this.authCollection.updateCredentials(
@@ -123,10 +123,9 @@ export default class AuthService {
 				statusCode: 200
 			};
 		} else if (loginResponse && !userFound) {
-			const userCreated = null;
-			// await this.userCollection.createUser(
-			// 	loginResponse.body
-			// );
+			const userCreated = await axios.post('http://localhost:5008/', {
+				...loginResponse.body
+			});
 
 			await this.authCollection.createCredentials(
 				credentialsLogin,

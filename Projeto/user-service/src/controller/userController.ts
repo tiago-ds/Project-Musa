@@ -1,13 +1,11 @@
 import { NextFunction, Response, Request } from 'express';
-import { Facade, FacadeInstance } from '../../facades/facade';
-import { OperationType } from '../../models/OperationType';
-import { User } from '../models/User';
+import { UserService } from '../service/userService';
 
 export default class UserController {
-	facade: Facade;
+	userService: UserService;
 
 	constructor() {
-		this.facade = FacadeInstance;
+		this.userService = new UserService();
 	}
 
 	async getMe(
@@ -16,7 +14,7 @@ export default class UserController {
 		next: NextFunction
 	): Promise<void> {
 		const access_token = req.headers.authorization;
-		const response = await this.facade.getMe(access_token);
+		const response = await this.userService.getMe(access_token);
 
 		res.status(response.statusCode).json(response.data);
 	}
@@ -27,7 +25,7 @@ export default class UserController {
 		next: NextFunction
 	): Promise<void> {
 		const userIds = req.body.userIds;
-		const response = await this.facade.getUsers(userIds);
+		const response = await this.userService.getUsers(userIds);
 
 		res.status(response.statusCode).json(response.data);
 	}
@@ -38,7 +36,7 @@ export default class UserController {
 		next: NextFunction
 	): Promise<void> {
 		const userId = req.params.id;
-		const response = await this.facade.getUser(userId);
+		const response = await this.userService.getUser(userId);
 
 		res.status(response.statusCode).json(response.data);
 	}
@@ -49,7 +47,7 @@ export default class UserController {
 		next: NextFunction
 	): Promise<void> {
 		const user = req.body;
-		const response = await this.facade.createUser(user);
+		const response = await this.userService.createUser(user);
 
 		res.status(response.statusCode).json(response.data);
 	}
@@ -60,7 +58,7 @@ export default class UserController {
 		next: NextFunction
 	): Promise<void> {
 		const user = req.body;
-		const response = await this.facade.updateUser(user);
+		const response = await this.userService.updateUser(user);
 
 		res.status(response.statusCode).json(response.data);
 	}
@@ -71,7 +69,7 @@ export default class UserController {
 		next: NextFunction
 	): Promise<void> {
 		const userId = req.params.id;
-		const response = await this.facade.deleteUser(userId);
+		const response = await this.userService.deleteUser(userId);
 
 		res.status(response.statusCode).json(response.data);
 	}
