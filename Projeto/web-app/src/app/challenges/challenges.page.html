@@ -18,7 +18,7 @@
     </h1>
     <div>
       <ion-avatar (click)="openModal()">
-        <img [src]="userService.userData.images[0].url" />
+        <img [src]="userService.userData.images[0].url" class="user-img"/>
       </ion-avatar>
 
       <ion-badge *ngIf="notifications.length" color="primary"

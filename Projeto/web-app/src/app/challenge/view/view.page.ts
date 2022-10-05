@@ -82,14 +82,14 @@ export class ViewChallengePage implements OnInit {
         });
 
         this.startingTimeDisplayName = `começou ${formatRelative(
-          Date.now(),
           this.challenge.startingTimestamp,
+          Date.now(),
           { locale: ptBR }
         )}`;
         this.endingTimeDisplayName = `${
           Number(this.challenge.finishingTime) > Date.now()
-            ? 'termina'
-            : 'terminou'
+            ? 'termina em'
+            : 'terminou em'
         } ${formatDistance(Date.now(), Number(this.challenge.finishingTime), {
           locale: ptBR,
         })}`;
