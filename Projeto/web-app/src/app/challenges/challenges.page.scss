@@ -27,7 +27,30 @@ ion-modal#example-modal .wrapper {
 
 .user-img {
   object-fit: cover;
-  height: 100px;
-  min-width: 100px;
+  height: 64px;
+  width: 64px;
   border-radius: 50%;
 }
+
+.badge-text{
+  padding: 2px;
+}
+
+
+@media (min-width: 600px)
+{
+  .user-img {
+    height: 100px;
+    min-width: 100px;
+  }
+
+  ion-avatar {
+    margin-right: 32px;
+  }
+
+  .badge-text{
+    font-size: 18px;
+  }
+}
+
+

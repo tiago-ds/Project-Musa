@@ -18,11 +18,11 @@
     </h1>
     <div>
       <ion-avatar (click)="openModal()">
-        <img [src]="userService.userData.images[0].url" class="user-img"/>
+        <img [src]="userService.userData.images[0].url" class="user-img" />
       </ion-avatar>
 
       <ion-badge *ngIf="notifications.length" color="primary"
-        >{{ notifications.length }}</ion-badge
+        ><span class="badge-text">{{ notifications.length }}</span></ion-badge
       >
       <ion-modal #modal trigger="open-modal">
         <ng-template>
@@ -49,7 +49,8 @@
                     </p>
                   </ion-row>
                   <ion-row class="ion-padding">
-                    <ion-button (click)="readNotification(item.id, item.challenge.id)"
+                    <ion-button
+                      (click)="readNotification(item.id, item.challenge.id)"
                       >Aceitar</ion-button
                     >
                     <ion-button
