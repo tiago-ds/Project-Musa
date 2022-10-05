@@ -1,34 +1,56 @@
-<ion-content class="blur-bg-dimmed" [fullscreen]="true" *ngIf="!hasCodeInParams">
-  <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 flex items-center justify-between">
-      <h1 class="text-4xl font-display font-bold tracking-tight">
-          <img class="h-8 py-2" src="../../assets/project-musa-icon.svg" alt="Project Musa">
-          Descubra novas possibilidades ouvindo música e desafiando seus amigos.
-      </h1>
+<ion-content
+  class="blur-bg-dimmed"
+  [fullscreen]="true"
+  *ngIf="!hasCodeInParams"
+>
+  <div
+    class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 flex items-center justify-between"
+  >
+    <h1 class="text-4xl font-display font-bold tracking-tight">
+      <img
+        class="h-8 py-2"
+        src="../../assets/project-musa-icon.svg"
+        alt="Project Musa"
+      />
+      Descubra novas possibilidades ouvindo música e desafiando seus amigos.
+    </h1>
   </div>
 
   <div class="absolute -right-32 top-16 -z-10">
-    <img src="../../assets/artwork-music.svg" alt="">
+    <img src="../../assets/artwork-music.svg" alt="" />
   </div>
-  
 
   <div class="py-24 absolute bottom-0 w-full">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <ion-button class="my-4 normal-case font-display tracking-tight" expand="block" size="large" color="success" [href]="spotifyAuthorizationUrl">
-            <span>
-              <img class="h-6 -mt-1 pr-2 inline-block" src="../../assets/spotify-logo.svg">
-              Entrar com sua conta do Spotify
-            </span>
-          </ion-button>
-      </div>
-  </div>
-  </ion-content>
-  
-  <ion-content class="blur-bg-dimmed" [fullscreen]="true" *ngIf="hasCodeInParams">
-    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 flex h-screen items-center justify-between">
-        <h1 class="text-4xl text-center m-auto font-display font-bold tracking-tight">
-          <ion-spinner name="circles"></ion-spinner>
-          <p>Um momento enquanto nos conectamos com o Spotify...</p>
-        </h1>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <ion-button
+        [disabled]="!authUrlPresent"
+        class="my-4 normal-case font-display tracking-tight"
+        expand="block"
+        size="large"
+        color="success"
+        [href]="spotifyAuthorizationUrl"
+      >
+        <span>
+          <img
+            class="h-6 -mt-1 pr-2 inline-block"
+            src="../../assets/spotify-logo.svg"
+          />
+          Entrar com sua conta do Spotify
+        </span>
+      </ion-button>
     </div>
-  
-  </ion-content>
+  </div>
+</ion-content>
+
+<ion-content class="blur-bg-dimmed" [fullscreen]="true" *ngIf="hasCodeInParams">
+  <div
+    class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 flex h-screen items-center justify-between"
+  >
+    <h1
+      class="text-4xl text-center m-auto font-display font-bold tracking-tight"
+    >
+      <ion-spinner name="circles"></ion-spinner>
+      <p>Um momento enquanto nos conectamos com o Spotify...</p>
+    </h1>
+  </div>
+</ion-content>

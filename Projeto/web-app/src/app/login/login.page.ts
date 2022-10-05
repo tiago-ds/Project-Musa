@@ -12,6 +12,7 @@ import { EndpointService } from '../musa-services/endpoint.service';
 export class LoginPage implements OnInit {
   hasCodeInParams: boolean;
   spotifyAuthorizationUrl: string;
+  authUrlPresent = false;
 
   constructor(
     private router: Router,
@@ -38,6 +39,7 @@ export class LoginPage implements OnInit {
   async getAuthorizeUrl() {
     try {
       const request = await this.authService.getAuthorizeUrl();
+      if (request) this.authUrlPresent = true;
       this.spotifyAuthorizationUrl = request as string;
     } catch (error) {}
   }
