@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, IonModal, NavController } from '@ionic/angular';
+import { AlertController, IonModal, NavController, ToastController } from '@ionic/angular';
 import { EndpointService } from 'src/app/musa-services/endpoint.service';
 import { ChallengeService } from 'src/app/musa-services/challenge.service';
 import { NotificationService } from '../../musa-services/notification.service';
@@ -15,6 +15,7 @@ export class NewChallengePage implements OnInit {
   challengeType: string;
   challengeTime: number;
   challenge;
+  friendId: string;
 
   constructor(
     private navCtrl: NavController,
@@ -22,7 +23,8 @@ export class NewChallengePage implements OnInit {
     private endpointService: EndpointService,
     private challengeService: ChallengeService,
     private notificationService: NotificationService,
-    public alertController: AlertController
+    public alertController: AlertController,
+    public toastController: ToastController
   ) {
     this.challengeType = 'explorer';
     this.challengeTime = 3600;
@@ -52,6 +54,8 @@ export class NewChallengePage implements OnInit {
 
   sendNotification(userId) {
     this.notificationService.sendNotification(userId, this.challenge);
+    this.presentToast(`Usuário de id ${userId} foi convidado.`);
+    this.friendId = '';
   }
 
   async presentErrorAlert() {
@@ -74,5 +78,15 @@ export class NewChallengePage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async presentToast(message: string) {
+    const toast = this.toastController.create({
+      message,
+      duration: 3000,
+      position: 'bottom'
+    });
+
+    (await toast).present();
   }
 }
