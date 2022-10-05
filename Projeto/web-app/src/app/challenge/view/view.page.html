@@ -9,28 +9,41 @@
       <span class="block mt-4 font-display uppercase font-bold tracking-widest"
         >Orbe {{ challengeTypeDisplayName[challenge.type] }}</span
       >
-      <h1 class="text-3xl font-bold font-display tracking-tight sm:text-4xl">
-        <span>Desafio</span>
-      </h1>
 
       <span class="block mt-2"
-        >{{ startingTimeDisplayName }} • {{ endingTimeDisplayName }}</span
+        ><h1 class="text-xl font-bold font-display tracking-tight sm:text-4xl">
+          <span>Desafio</span>
+        </h1>
+        {{ startingTimeDisplayName }} • {{ endingTimeDisplayName }}</span
       >
       <span class="block mt-2"
-        >ID: <span class="font-bold">{{ challenge.uuid }}</span></span
+        >ID: <span class="font-bold text-sm">{{ challenge.id }}</span></span
       >
+      <div class="bar-chart" *ngIf="challengeParticipants.length">
+        <div
+          *ngFor="let user of challengeParticipants"
+          [ngStyle]="{'width': user.percentage + '%', 'background-color': 'rgba(91, 48, 211,' +  user.percentage/100 + ')'}"
+          class="bar tooltip-container"
+        >
+          <span class="name tooltip" data-tooltip="I’m the tooltip text."
+            >{{user.name.split(" ")[0]}}</span
+          >
+        </div>
+      </div>
     </div>
 
     <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
       <h2 class="uppercase font-bold mb-4">Histórico</h2>
       <div class="flex flex-col w-full">
         <ng-container *ngFor="let song of allHistory">
-          <div *ngIf="song.userName" class="self-start py-3 flex flex-row">
-            <span class="font-display font-bold text-6l"
-              ><strong>{{ song.userName }}</strong> pontuou {{ song.points
-              }}</span
-            >
-            <div class="ml-4">
+          <div *ngIf="song.userName" class="self-start py-3 bg-fuchsia-800">
+            <div>
+              <span class="font-display font-bold text-6l"
+                ><strong>{{ song.userName }}</strong> fez {{ song.points }}
+                pontos ouvindo</span
+              >
+            </div>
+            <div>
               <p class="text-2xl mt-0.5 font-display">
                 {{ song.artist }} - <strong>{{ song.title }}</strong>
               </p>

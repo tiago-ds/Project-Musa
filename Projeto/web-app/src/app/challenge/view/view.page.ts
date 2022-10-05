@@ -32,6 +32,7 @@ export class ViewChallengePage implements OnInit {
   startingTimeDisplayName = '';
   endingTimeDisplayName = '';
   allHistory = [];
+  challengeParticipants = [];
 
   constructor(
     private navCtrl: NavController,
@@ -48,16 +49,26 @@ export class ViewChallengePage implements OnInit {
 
       try {
         this.challenge = await this.challengeService.viewChallenge(params.id);
+        let totalPoints = 0;
+
+        Object.keys(this.challenge.challengeData).forEach((userId) => {
+          totalPoints += this.challenge.challengeData[userId].points;
+        });
+
+        Object.keys(this.challenge.challengeData).forEach((userId) => {
+          const name = this.challenge.challengeData[userId].name;
+          const points = this.challenge.challengeData[userId].points;
+          const percentage = {
+            name,
+            points,
+            percentage: (points / totalPoints) * 100,
+          };
+          this.challengeParticipants.push(percentage);
+        });
 
         if (!this.challenge.startingTimestamp) {
           return;
         }
-
-        let totalPoints = 0;
-
-        this.getChallengeUserIds().forEach((userId) => {
-          totalPoints += this.challenge.challengeData[userId].points;
-        });
 
         this.getChallengeUserIds().forEach((userId) => {
           this.challenge.challengeData[userId].listenedSongs.forEach(
@@ -83,7 +94,7 @@ export class ViewChallengePage implements OnInit {
           locale: ptBR,
         })}`;
 
-        this.allHistory.sort((a, b) => a.timestamp - b.timestamp);
+        this.allHistory.sort((a, b) => a.timestamp - b.timestamp).reverse();
       } catch (e) {
         console.log(e);
         this.goBack();
