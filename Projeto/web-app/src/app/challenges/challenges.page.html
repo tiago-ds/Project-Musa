@@ -49,11 +49,11 @@
                     </p>
                   </ion-row>
                   <ion-row class="ion-padding">
-                    <ion-button (click)="readNotification(item.id)"
+                    <ion-button (click)="readNotification(item.id, item.challenge.id)"
                       >Aceitar</ion-button
                     >
                     <ion-button
-                      (click)="readNotification(item.id)"
+                      (click)="readNotification(item.id, null)"
                       color="danger"
                       >Recusar</ion-button
                     >

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { IonModal } from '@ionic/angular';
 import { NotificationService } from '../musa-services/notification.service';
 import { UserService } from '../musa-services/user.service';
+import { ChallengeService } from '../musa-services/challenge.service';
 
 @Component({
   selector: 'app-challenges',
@@ -17,7 +18,8 @@ export class ChallengesPage implements OnInit {
   constructor(
     public userService: UserService,
     private router: Router,
-    public notificationService: NotificationService
+    public notificationService: NotificationService,
+    public challengeService: ChallengeService
   ) {}
 
   viewChallenge() {
@@ -30,13 +32,18 @@ export class ChallengesPage implements OnInit {
     });
   }
 
-  readNotification(notificationId) {
+  readNotification(notificationId: string, challengeId: string) {
+    if(challengeId === null) {
+      return;
+    }
     this.notificationService.readNotification(notificationId).then((data) => {
       this.notifications = this.notifications.filter(
         (notification) => notification.id !== notificationId
       );
-      console.log(this.notifications);
     });
+
+    this.router.navigateByUrl(`/challenge/view?id=${challengeId}`);
+    this.challengeService.joinChallenge(challengeId);
   }
 
   openModal() {
