@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, IonModal, NavController, ToastController } from '@ionic/angular';
+import { AlertController, IonModal, NavController } from '@ionic/angular';
 import { EndpointService } from 'src/app/musa-services/endpoint.service';
 import { ChallengeService } from 'src/app/musa-services/challenge.service';
 import { NotificationService } from '../../musa-services/notification.service';
+import { presentToast } from 'src/app/utils/toast.util';
 
 @Component({
   selector: 'app-new',
@@ -24,7 +25,6 @@ export class NewChallengePage implements OnInit {
     private challengeService: ChallengeService,
     private notificationService: NotificationService,
     public alertController: AlertController,
-    public toastController: ToastController
   ) {
     this.challengeType = 'explorer';
     this.challengeTime = 3600;
@@ -52,10 +52,14 @@ export class NewChallengePage implements OnInit {
     this.router.navigateByUrl(`/challenge/view?id=${this.challenge.id}`);
   }
 
-  sendNotification(userId) {
-    this.notificationService.sendNotification(userId, this.challenge);
-    this.presentToast(`Usuário de id ${userId} foi convidado.`);
-    this.friendId = '';
+  async sendNotification(userId) {
+    const result = await this.notificationService.sendNotification(userId, this.challenge);
+    if(result) {
+      presentToast(`Usuário de id ${userId} foi convidado.`);
+      this.friendId = '';
+    } else {
+      presentToast(`Falha ao convidar o usuário de id ${userId}.`);
+    }
   }
 
   async presentErrorAlert() {
@@ -78,15 +82,5 @@ export class NewChallengePage implements OnInit {
     });
 
     await alert.present();
-  }
-
-  async presentToast(message: string) {
-    const toast = this.toastController.create({
-      message,
-      duration: 3000,
-      position: 'bottom'
-    });
-
-    (await toast).present();
   }
 }
