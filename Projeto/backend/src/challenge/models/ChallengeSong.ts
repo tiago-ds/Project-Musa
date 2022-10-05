@@ -6,4 +6,5 @@ export interface ChallengeSong {
 	album: string;
 	albumImageUrl: string;
 	timestamp: number;
+	playedAt: string;
 }

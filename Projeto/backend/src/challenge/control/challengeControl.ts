@@ -66,7 +66,7 @@ export default class ChallengeControl {
 	async refreshChallenge(id: string): Promise<MusaResponse<Challenge>> {
 		let challenge = await this.challengeCollection.getChallenge(id);
 		let result;
-		console.log(challenge);
+		const updateAt = new Date().getTime();
 
 		if (challenge) {
 			for (const userId of Object.keys(challenge.challengeData)) {
@@ -99,7 +99,7 @@ export default class ChallengeControl {
 					const userPlayedTracks = (
 						await this.streamingApi.getUserRecentlyPlayedTracks(
 							50,
-							challenge.lastUpdated - 60 * 1000
+							challenge.lastUpdated - 300 * 1000
 						)
 					)?.body;
 
@@ -138,13 +138,22 @@ export default class ChallengeControl {
 							...challenge.challengeData,
 							[userId]: {
 								listenedSongs: listenedSong.concat(
-									trackOrb.challengeSongs
+									trackOrb.challengeSongs.filter((song) => {
+										return !listenedSong.find(
+											(listened) => {
+												return (
+													listened.timestamp ==
+													song.timestamp
+												);
+											}
+										);
+									})
 								),
 								points: points + trackOrb.points,
 								name: name
 							}
 						},
-						lastUpdated: new Date().getTime()
+						lastUpdated: updateAt
 					};
 
 					result = await this.challengeCollection.updateChallenge(
