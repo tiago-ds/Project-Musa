@@ -24,3 +24,10 @@ ion-modal#example-modal ion-icon {
 ion-modal#example-modal .wrapper {
   margin-bottom: 10px;
 }
+
+.user-img {
+  object-fit: cover;
+  height: 100px;
+  min-width: 100px;
+  border-radius: 50%;
+}
