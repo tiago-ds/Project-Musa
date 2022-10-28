@@ -3,15 +3,17 @@ import SpotifyApiFacade from '../../facades/spotifyApiFacade';
 import { Challenge } from '../models/Challenge';
 import { MusicServiceFactory } from '../../factories/musicServiceFactory';
 import AuthCollection from '../../auth/collection/authCollection';
-import { ExplorerOrbCalculator } from '../orbCalculators/explorerOrbCalculator';
 import { MusaResponse } from '../../models/Response';
-import { EnergeticOrbCalculator } from '../orbCalculators/energeticOrbCalculator';
 import { ChallengeType } from '../models/ChallengeType';
 import { v4 } from 'uuid';
+import { ExplorerOrbCalculator } from '../orbCalculators/explorerOrbCalculator';
+import { EnergeticOrbCalculator } from '../orbCalculators/energeticOrbCalculator';
+import { StanOrbCalculator } from '../orbCalculators/stanOrbCalculator';
 
 export default class ChallengeControl {
 	explorerOrbCalculator: ExplorerOrbCalculator;
 	energeticOrbCalculator: EnergeticOrbCalculator;
+	stanOrbCalculator: StanOrbCalculator;
 	streamingApi: SpotifyApiFacade;
 	challengeCollection: ChallengeCollection;
 	credentialsCollection: AuthCollection;
@@ -22,17 +24,24 @@ export default class ChallengeControl {
 		this.streamingApi = this.musicServiceFactory.create('spotify');
 		this.challengeCollection = new ChallengeCollection();
 		this.credentialsCollection = new AuthCollection();
-		this.energeticOrbCalculator = new EnergeticOrbCalculator();
 		this.mapOrbTypes = new Map();
+		this.energeticOrbCalculator = new EnergeticOrbCalculator();
+		this.explorerOrbCalculator = new ExplorerOrbCalculator();
+		this.stanOrbCalculator = new StanOrbCalculator();
 		this.mapOrbTypes.set(
 			ChallengeType.Energetic,
 			this.energeticOrbCalculator.calculateOrb.bind(this)
 		);
-		this.explorerOrbCalculator = new ExplorerOrbCalculator();
+		
 		this.mapOrbTypes.set(
 			ChallengeType.Explorer,
 			this.explorerOrbCalculator.calculateOrb.bind(this)
 		);
+
+		this.mapOrbTypes.set(
+			ChallengeType.Stan,
+			this.stanOrbCalculator.calculateOrb.bind(this)
+		)
 	}
 
 	async createChallenge<T>(challenge: T): Promise<any> {
@@ -123,12 +132,14 @@ export default class ChallengeControl {
 						tracksInfo.push(trackInfo);
 					}
 
+					if(challenge.type === ChallengeType.Stan)
+						this.stanOrbCalculator.artist = challenge.artist;
+
 					const trackOrb = this.mapOrbTypes.get(challenge.type)(
 						tracksInfo
 					);
 
-					const listenedSong =
-						challenge.challengeData[userId].listenedSongs;
+					const listenedSong = challenge.challengeData[userId].listenedSongs;
 					const points = challenge.challengeData[userId].points;
 					const name = challenge.challengeData[userId].name;
 

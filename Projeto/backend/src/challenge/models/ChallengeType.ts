@@ -3,4 +3,5 @@ export enum ChallengeType {
 	Energetic = 'energetic',
 	Trendsetter = 'trendsetter',
 	Challenger = 'challenger',
+	Stan = 'stan'
 }

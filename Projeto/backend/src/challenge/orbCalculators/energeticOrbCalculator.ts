@@ -21,7 +21,8 @@ export class EnergeticOrbCalculator implements OrbCalculatorInterface {
 				album: track.album.name,
 				albumImageUrl: track.album.images[0].url,
 				timestamp: new Date(trackInfo.playedAt).getTime(),
-				points: Math.floor(trackFeatures.energy * 100)
+				points: Math.floor(trackFeatures.energy * 100),
+				playedAt: trackInfo.playedAt
 			};
 
 			orb.challengeSongs.push(challengeSong);
