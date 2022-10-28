@@ -9,6 +9,7 @@ import { v4 } from 'uuid';
 import { ExplorerOrbCalculator } from '../orbCalculators/explorerOrbCalculator';
 import { EnergeticOrbCalculator } from '../orbCalculators/energeticOrbCalculator';
 import { StanOrbCalculator } from '../orbCalculators/stanOrbCalculator';
+import AuthControl from '../../auth/control/authControl';
 
 export default class ChallengeControl {
 	explorerOrbCalculator: ExplorerOrbCalculator;
@@ -19,11 +20,14 @@ export default class ChallengeControl {
 	credentialsCollection: AuthCollection;
 	musicServiceFactory: MusicServiceFactory = new MusicServiceFactory();
 	mapOrbTypes: Map<String, any>;
+	authControl: AuthControl;
 
 	constructor() {
 		this.streamingApi = this.musicServiceFactory.create('spotify');
 		this.challengeCollection = new ChallengeCollection();
 		this.credentialsCollection = new AuthCollection();
+		this.authControl = new AuthControl();
+		this.energeticOrbCalculator = new EnergeticOrbCalculator();
 		this.mapOrbTypes = new Map();
 		this.energeticOrbCalculator = new EnergeticOrbCalculator();
 		this.explorerOrbCalculator = new ExplorerOrbCalculator();
@@ -32,7 +36,7 @@ export default class ChallengeControl {
 			ChallengeType.Energetic,
 			this.energeticOrbCalculator.calculateOrb.bind(this)
 		);
-		
+
 		this.mapOrbTypes.set(
 			ChallengeType.Explorer,
 			this.explorerOrbCalculator.calculateOrb.bind(this)
@@ -41,7 +45,7 @@ export default class ChallengeControl {
 		this.mapOrbTypes.set(
 			ChallengeType.Stan,
 			this.stanOrbCalculator.calculateOrb.bind(this)
-		)
+		);
 	}
 
 	async createChallenge<T>(challenge: T): Promise<any> {
@@ -81,96 +85,87 @@ export default class ChallengeControl {
 			for (const userId of Object.keys(challenge.challengeData)) {
 				let userCredentials =
 					await this.credentialsCollection.getCredentials(userId);
-				console.log(userCredentials);
-				if (userCredentials.expires_at < new Date().getTime()) {
-					userCredentials = {
-						refresh_token: userCredentials.refresh_token,
-						expires_at: new Date().getTime() + 3600 * 1000,
-						...(
-							await this.streamingApi.refreshAccessToken(
-								userCredentials.access_token,
-								userCredentials.refresh_token
-							)
-						).body
-					};
-					await this.credentialsCollection.updateCredentials(
-						userCredentials,
-						userId
-					);
-				}
 
-				if (userCredentials) {
-					this.streamingApi.setCredentials(
-						userCredentials.access_token,
-						userCredentials.refresh_token
+				if (userCredentials.expires_at > new Date().getTime()) {
+					const response = await this.authControl.refreshToken(
+						userCredentials
 					);
 
-					const userPlayedTracks = (
-						await this.streamingApi.getUserRecentlyPlayedTracks(
-							50,
-							challenge.lastUpdated - 300 * 1000
-						)
-					)?.body;
-
-					const tracksInfo = [];
-
-					for (const track of userPlayedTracks.items) {
-						const trackInfo = {
-							track: (
-								await this.streamingApi.getTrack(track.track.id)
-							).body,
-							trackFeatures:
-								challenge.type == ChallengeType.Energetic
-									? (
-											await this.streamingApi.getTrackFeatures(
-												track.track.id
-											)
-									  ).body
-									: null,
-							playedAt: track.played_at
+					if (response.statusCode !== 200) {
+						return {
+							data: null,
+							statusCode: 401
 						};
-						tracksInfo.push(trackInfo);
 					}
-
-					if(challenge.type === ChallengeType.Stan)
-						this.stanOrbCalculator.artist = challenge.artist;
-
-					const trackOrb = this.mapOrbTypes.get(challenge.type)(
-						tracksInfo
-					);
-
-					const listenedSong = challenge.challengeData[userId].listenedSongs;
-					const points = challenge.challengeData[userId].points;
-					const name = challenge.challengeData[userId].name;
-
-					challenge = {
-						...challenge,
-						challengeData: {
-							...challenge.challengeData,
-							[userId]: {
-								listenedSongs: listenedSong.concat(
-									trackOrb.challengeSongs.filter((song) => {
-										return !listenedSong.find(
-											(listened) => {
-												return (
-													listened.timestamp ==
-													song.timestamp
-												);
-											}
-										);
-									})
-								),
-								points: points + trackOrb.points,
-								name: name
-							}
-						},
-						lastUpdated: updateAt
-					};
-
-					result = await this.challengeCollection.updateChallenge(
-						challenge
-					);
 				}
+
+				this.streamingApi.setCredentials(
+					userCredentials.access_token,
+					userCredentials.refresh_token
+				);
+
+				const userPlayedTracks = (
+					await this.streamingApi.getUserRecentlyPlayedTracks(
+						50,
+						challenge.lastUpdated - 300 * 1000
+					)
+				)?.body;
+
+				const tracksInfo = [];
+
+				for (const track of userPlayedTracks.items) {
+					const trackInfo = {
+						track: (
+							await this.streamingApi.getTrack(track.track.id)
+						).body,
+						trackFeatures:
+							challenge.type == ChallengeType.Energetic
+								? (
+										await this.streamingApi.getTrackFeatures(
+											track.track.id
+										)
+								  ).body
+								: null,
+						playedAt: track.played_at
+					};
+					tracksInfo.push(trackInfo);
+				}
+				if (challenge.type === ChallengeType.Stan)
+					this.stanOrbCalculator.artist = challenge.artist;
+
+				const trackOrb = this.mapOrbTypes.get(challenge.type)(
+					tracksInfo
+				);
+
+				const listenedSong =
+					challenge.challengeData[userId].listenedSongs;
+				const points = challenge.challengeData[userId].points;
+				const name = challenge.challengeData[userId].name;
+
+				challenge = {
+					...challenge,
+					challengeData: {
+						...challenge.challengeData,
+						[userId]: {
+							listenedSongs: listenedSong.concat(
+								trackOrb.challengeSongs.filter((song) => {
+									return !listenedSong.find((listened) => {
+										return (
+											listened.timestamp == song.timestamp
+										);
+									});
+								})
+							),
+							points: points + trackOrb.points,
+							name: name
+						}
+					},
+					lastUpdated: updateAt
+				};
+
+				result = await this.challengeCollection.updateChallenge(
+					challenge
+				);
 			}
 			if (result) {
 				return {

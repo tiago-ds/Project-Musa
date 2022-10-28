@@ -78,11 +78,12 @@ export default class AuthControl {
 
 		const me = await this.streamingApi.getProfileInfo(
 			refreshAccessTokenResponse.access_token,
-			refreshAccessTokenResponse.refresh_token
+			credentialsTokens.refresh_token
 		);
 
 		const userCredentials = {
 			...refreshAccessTokenResponse,
+			refresh_token: credentialsTokens.refresh_token,
 			expires_at: new Date().getTime() + 3600 * 1000
 		};
 		await this.authCollection.updateCredentials(
