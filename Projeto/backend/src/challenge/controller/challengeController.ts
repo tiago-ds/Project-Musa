@@ -2,11 +2,14 @@ import { Facade, FacadeInstance } from '../../facades/facade';
 import { NextFunction, Response, Request } from 'express';
 import { OperationType } from '../../models/OperationType';
 import { Challenge } from '../models/Challenge';
+import ChallengeControl from '../control/challengeControl';
 
 export default class ChallengeController {
 	facade: Facade;
+	challengeControl: ChallengeControl;
 
 	constructor() {
+		this.challengeControl = new ChallengeControl();
 		this.facade = FacadeInstance;
 	}
 
@@ -45,6 +48,22 @@ export default class ChallengeController {
 			challengeId,
 			userId,
 			userName
+		);
+
+		res.status(response.statusCode).json(response.data);
+	}
+
+	async searchArtist(
+		req: Request,
+		res: Response,
+		next: NextFunction
+	): Promise<void> {
+		const searchTerm: string = req.params.term;
+		const userId = req.query.id as string;
+
+		const response = await this.challengeControl.searchArtist(
+			userId,
+			searchTerm
 		);
 
 		res.status(response.statusCode).json(response.data);

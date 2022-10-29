@@ -24,6 +24,10 @@ export default class SpotifyApiFacade implements IMusicStreamingComunication {
 		];
 	}
 
+	async search(term: string): Promise<any> {
+		return await this.spotifyApi.searchArtists(term);
+	}
+
 	getAuthorizeUrl(redirectUri: string): string {
 		this.spotifyApi.setRedirectURI(redirectUri);
 		return this.spotifyApi.createAuthorizeURL(this.scopes, '');

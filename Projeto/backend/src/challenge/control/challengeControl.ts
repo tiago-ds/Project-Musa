@@ -97,12 +97,11 @@ export default class ChallengeControl {
 							statusCode: 401
 						};
 					}
+					this.streamingApi.setCredentials(
+						response.data.access_token,
+						userCredentials.refresh_token
+					);
 				}
-
-				this.streamingApi.setCredentials(
-					userCredentials.access_token,
-					userCredentials.refresh_token
-				);
 
 				const userPlayedTracks = (
 					await this.streamingApi.getUserRecentlyPlayedTracks(
@@ -231,6 +230,49 @@ export default class ChallengeControl {
 					statusCode: 400
 				};
 			}
+		} else {
+			return {
+				data: null,
+				statusCode: 400
+			};
+		}
+	}
+
+	async searchArtist(
+		userId: string,
+		searchTerm: string
+	): Promise<MusaResponse<any>> {
+		let userCredentials = await this.credentialsCollection.getCredentials(
+			userId
+		);
+		let refreshToken: any;
+
+		if (userCredentials.expires_at > new Date().getTime()) {
+			refreshToken = await this.authControl.refreshToken(userCredentials);
+
+			if (refreshToken.statusCode !== 200) {
+				return {
+					data: null,
+					statusCode: 401
+				};
+			}
+			await this.streamingApi.setCredentials(
+				refreshToken.data.access_token,
+				userCredentials.refresh_token
+			);
+		} else {
+			await this.streamingApi.setCredentials(
+				userCredentials.access_token,
+				userCredentials.refresh_token
+			);
+		}
+
+		const response = await this.streamingApi.search(searchTerm);
+		if (response) {
+			return {
+				data: response,
+				statusCode: 400
+			};
 		} else {
 			return {
 				data: null,
