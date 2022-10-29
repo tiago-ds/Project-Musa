@@ -20,15 +20,18 @@
         >ID: <span class="font-bold text-sm">{{ challenge.id }}</span></span
       >
       <div class="bar-chart" *ngIf="challengeParticipants.length">
-        <div
-          *ngFor="let user of challengeParticipants"
-          [ngStyle]="{'width': user.percentage + '%', 'background-color': 'rgba(91, 48, 211,' +  user.percentage/100 + ')'}"
-          class="bar tooltip-container"
-        >
-          <span class="name tooltip" data-tooltip="I’m the tooltip text."
-            >{{user.name.split(" ")[0]}}</span
+        <ion-item *ngFor="let user of challengeParticipants">
+          <ion-avatar slot="start">
+            <img
+              alt="Silhouette of a person's head"
+              src="https://ionicframework.com/docs/img/demos/avatar.svg"
+            />
+          </ion-avatar>
+
+          <ion-label
+            >{{user.name.split(" ")[0]}}: {{user.points}} pontos</ion-label
           >
-        </div>
+        </ion-item>
       </div>
     </div>
 
