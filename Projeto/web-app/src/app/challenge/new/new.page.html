@@ -59,7 +59,28 @@
           </ion-label>
           <ion-radio slot="start" value="challenger"></ion-radio>
         </ion-item>
+
+        <ion-item class="ion-transparent">
+          <ion-label>
+            <h2>Orbe de Stan</h2>
+            <p>Você pontua com a quantidade de tempo que escuta determinado artista.</p>
+          </ion-label>
+          <ion-radio slot="start" value="stan"></ion-radio>
+        </ion-item>
+
       </ion-radio-group>
+    </ion-list>
+
+    <ion-list
+      lines="none"
+      mode="md"
+      class="rounded-md shadow-lg bg-opacity-80 my-4"
+      *ngIf="challengeType==='stan'"
+    >
+      <ion-item class="ion-transparent">
+        <ion-label>Selecione o artista estrela do Orb Stan</ion-label>
+        <ion-input placeholder="Gabrielle Aplin"[(ngModel)]="stanArtist"></ion-input>
+      </ion-item>
     </ion-list>
 
     <ion-list

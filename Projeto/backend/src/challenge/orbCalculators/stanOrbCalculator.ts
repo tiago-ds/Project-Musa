@@ -35,6 +35,7 @@ export class StanOrbCalculator implements OrbCalculatorInterface {
 		}
 		return orb;
 	}
+	
 	calculateStanPoints(artist: string, trackDuration: number): number {
 		if (artist === this.artist) return Math.trunc(trackDuration / 1000);
 		return 0;

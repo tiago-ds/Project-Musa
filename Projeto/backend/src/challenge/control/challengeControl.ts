@@ -52,6 +52,9 @@ export default class ChallengeControl {
 		console.log(challenge);
 
 		const id = v4();
+		
+		//if(challenge.type === ChallengeType.Stan && !challenge.artist)
+			//throw new error()
 
 		const challengeCreated = await this.challengeCollection.createChallenge(
 			{
@@ -279,5 +282,9 @@ export default class ChallengeControl {
 				statusCode: 400
 			};
 		}
+	}
+
+	async getAvailableOrbTypes(): Promise<string[]> {
+		return ['Energetic', 'Explorer', 'Stan'];
 	}
 }

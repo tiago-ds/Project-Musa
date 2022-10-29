@@ -15,6 +15,7 @@ export class NewChallengePage implements OnInit {
   @ViewChild(IonModal) modal: IonModal;
   challengeType: string;
   challengeTime: number;
+  stanArtist: string;
   challenge;
   friendId: string;
 
@@ -40,7 +41,8 @@ export class NewChallengePage implements OnInit {
     try {
       this.challenge = await this.challengeService.createChallenge(
         this.challengeType,
-        this.challengeTime
+        this.challengeTime,
+        this.stanArtist
       );
       this.modal.present();
     } catch (error) {

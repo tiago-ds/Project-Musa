@@ -18,12 +18,13 @@ export class ChallengeService {
     });
   }
 
-  async createChallenge(challengeType, challengeTime: number) {
+  async createChallenge(challengeType, challengeTime: number, artist: string = null) {
     try {
       const user = await this.storage.get('user');
       const request = await this.http
         .post(`${environment.apiUrl}/challenge`, {
           type: challengeType,
+          artist: artist,
           finished: false,
           startingTimestamp: Date.now(),
           finishingTime: new Date().getTime() + challengeTime * 1000,
