@@ -10,6 +10,7 @@ import { ExplorerOrbCalculator } from '../orbCalculators/explorerOrbCalculator';
 import { EnergeticOrbCalculator } from '../orbCalculators/energeticOrbCalculator';
 import { StanOrbCalculator } from '../orbCalculators/stanOrbCalculator';
 import AuthControl from '../../auth/control/authControl';
+import { StanArtist } from '../models/StanArtist';
 
 export default class ChallengeControl {
 	explorerOrbCalculator: ExplorerOrbCalculator;
@@ -21,7 +22,7 @@ export default class ChallengeControl {
 	musicServiceFactory: MusicServiceFactory = new MusicServiceFactory();
 	mapOrbTypes: Map<String, any>;
 	authControl: AuthControl;
-	challenge: Challenge;
+	stanArtist: StanArtist;
 
 	constructor() {
 		this.streamingApi = this.musicServiceFactory.create('spotify');
@@ -79,7 +80,6 @@ export default class ChallengeControl {
 
 	async refreshChallenge(id: string): Promise<MusaResponse<Challenge>> {
 		let challenge = await this.challengeCollection.getChallenge(id);
-		this.challenge = challenge;
 		let result;
 		const updateAt = new Date().getTime();
 
@@ -136,6 +136,9 @@ export default class ChallengeControl {
 				};
 				tracksInfo.push(trackInfo);
 			}
+
+			if (challenge.type === ChallengeType.Stan)
+				this.stanArtist = challenge.artist;
 
 			const trackOrb = this.mapOrbTypes.get(challenge.type)(tracksInfo);
 
