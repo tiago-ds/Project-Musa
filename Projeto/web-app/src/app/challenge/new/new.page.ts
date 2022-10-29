@@ -15,9 +15,11 @@ export class NewChallengePage implements OnInit {
   @ViewChild(IonModal) modal: IonModal;
   challengeType: string;
   challengeTime: number;
-  stanArtist: string;
+  stanArtist: any;
   challenge;
   friendId: string;
+  isSearching = [];
+  results = [];
 
   constructor(
     private navCtrl: NavController,
@@ -25,7 +27,7 @@ export class NewChallengePage implements OnInit {
     private endpointService: EndpointService,
     private challengeService: ChallengeService,
     private notificationService: NotificationService,
-    public alertController: AlertController,
+    public alertController: AlertController
   ) {
     this.challengeType = 'explorer';
     this.challengeTime = 3600;
@@ -37,7 +39,7 @@ export class NewChallengePage implements OnInit {
     this.navCtrl.navigateBack('/home');
   }
 
-  async createChallenge() { 
+  async createChallenge() {
     // instead of passing the artist, pass the artist ID when the chosen orb is STAN
     try {
       this.challenge = await this.challengeService.createChallenge(
@@ -56,8 +58,11 @@ export class NewChallengePage implements OnInit {
   }
 
   async sendNotification(userId) {
-    const result = await this.notificationService.sendNotification(userId, this.challenge);
-    if(result) {
+    const result = await this.notificationService.sendNotification(
+      userId,
+      this.challenge
+    );
+    if (result) {
       presentToast(`Usuário de id ${userId} foi convidado.`);
       this.friendId = '';
     } else {
@@ -85,5 +90,29 @@ export class NewChallengePage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  async handleSearch(event: any) {
+    if (event && event.target.value) {
+      this.results = await this.challengeService.search(event.target.value);
+    } else {
+      this.results = [];
+    }
+    this.isSearching = [];
+  }
+
+  handleInput() {
+    this.results = [];
+    this.isSearching = [1, 2, 3];
+  }
+
+  selectArtist(artist: any) {
+    this.stanArtist = artist;
+    this.results = [];
+    this.isSearching = [];
+  }
+
+  clearStan() {
+    this.stanArtist = null;
   }
 }

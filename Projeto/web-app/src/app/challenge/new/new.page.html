@@ -63,24 +63,61 @@
         <ion-item class="ion-transparent">
           <ion-label>
             <h2>Orbe de Stan</h2>
-            <p>Você pontua com a quantidade de tempo que escuta determinado artista.</p>
+            <p>
+              Você pontua com a quantidade de tempo que escuta determinado
+              artista.
+            </p>
           </ion-label>
           <ion-radio slot="start" value="stan"></ion-radio>
         </ion-item>
-
+        <ion-item class="ion-transparent" *ngIf="challengeType==='stan'">
+          <div class="flex flex-col w-full" *ngIf="stanArtist">
+            <ion-item>
+              <ion-thumbnail slot="start">
+                <img [alt]="stanArtist.name" [src]="stanArtist.pictureUrl" />
+              </ion-thumbnail>
+              <ion-label>{{ stanArtist.name }}</ion-label>
+            </ion-item>
+            <ion-item button (click)="clearStan()">
+              <ion-label color="tertiary">Selecionar outro artista</ion-label>
+            </ion-item>
+          </div>
+          <div class="flex flex-col w-full" *ngIf="!stanArtist">
+            <ion-searchbar
+              [placeholder]="'Pesquise o artista'"
+              [debounce]="1500"
+              (ionChange)="handleSearch($event)"
+              (ionInput)="handleInput()"
+            ></ion-searchbar>
+            <ion-list>
+              <ion-item *ngFor="let item of isSearching">
+                <ion-thumbnail slot="start">
+                  <ion-skeleton-text
+                    class="thumb"
+                    [animated]="true"
+                  ></ion-skeleton-text>
+                </ion-thumbnail>
+                <ion-label>
+                  <ion-skeleton-text
+                    [animated]="true"
+                    style="width: 80%; height: 20px"
+                  ></ion-skeleton-text>
+                </ion-label>
+              </ion-item>
+              <ion-item
+                button
+                *ngFor="let result of results"
+                (click)="selectArtist(result)"
+              >
+                <ion-thumbnail slot="start">
+                  <img [alt]="result.name" [src]="result.pictureUrl" />
+                </ion-thumbnail>
+                <ion-label>{{ result.name }}</ion-label>
+              </ion-item>
+            </ion-list>
+          </div>
+        </ion-item>
       </ion-radio-group>
-    </ion-list>
-
-    <ion-list
-      lines="none"
-      mode="md"
-      class="rounded-md shadow-lg bg-opacity-80 my-4"
-      *ngIf="challengeType==='stan'"
-    >
-      <ion-item class="ion-transparent">
-        <ion-label>Selecione o artista estrela do Orb Stan</ion-label>
-        <ion-input placeholder="Gabrielle Aplin"[(ngModel)]="stanArtist"></ion-input>
-      </ion-item>
     </ion-list>
 
     <ion-list

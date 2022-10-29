@@ -18,13 +18,17 @@ export class ChallengeService {
     });
   }
 
-  async createChallenge(challengeType, challengeTime: number, artist: string = null) {
+  async createChallenge(
+    challengeType,
+    challengeTime: number,
+    artist: string = null
+  ) {
     try {
       const user = await this.storage.get('user');
       const request = await this.http
         .post(`${environment.apiUrl}/challenge`, {
           type: challengeType,
-          artist: artist,
+          artist,
           finished: false,
           startingTimestamp: Date.now(),
           finishingTime: new Date().getTime() + challengeTime * 1000,
@@ -54,10 +58,22 @@ export class ChallengeService {
     const user = await this.storage.get('user');
     const request = await this.http
       .put(`${environment.apiUrl}/challenge/${challengeUuid}`, {
-        user: user
+        user,
       })
       .toPromise();
 
     return request;
+  }
+
+  async search(searchTerm: string) {
+    const user = await this.storage.get('user');
+    const response = (await this.http
+      .get(`${environment.apiUrl}/challenge/search/${searchTerm}`, {
+        params: {
+          id: user.id,
+        },
+      })
+      .toPromise()) as Array<any>;
+    return response;
   }
 }

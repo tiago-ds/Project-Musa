@@ -1,0 +1,12 @@
+ion-skeleton-text {
+  --background: rgba(229, 157, 255, 0.493);
+  --background-rgb: 229, 157, 255;
+
+  &.thumb {
+    --border-radius: 50%;
+  }
+}
+
+ion-thumbnail {
+  --border-radius: 50%;
+}
