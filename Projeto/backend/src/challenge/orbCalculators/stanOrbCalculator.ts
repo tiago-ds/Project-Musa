@@ -4,7 +4,7 @@ import { TrackInfo } from '../models/TrackInfo';
 import { OrbCalculatorInterface } from '../models/orbCalculatorInterface';
 
 export class StanOrbCalculator implements OrbCalculatorInterface {
-	artist: string;
+	challenge: any;
 
 	calculateOrb(tracksInfo: TrackInfo[]): Orb {
 		const orb: Orb = {
@@ -22,7 +22,10 @@ export class StanOrbCalculator implements OrbCalculatorInterface {
 				album: track.album.name,
 				albumImageUrl: track.album.images[0].url,
 				timestamp: new Date(trackInfo.playedAt).getTime(),
-				points: track.artists[0].id == this.artist ? Math.trunc(track.duration_ms / 1000) : 0,
+				points:
+					track.artists[0]?.id == this.challenge.artist.id
+						? Math.trunc(track.duration_ms / 1000)
+						: 0,
 				playedAt: trackInfo.playedAt
 			};
 
