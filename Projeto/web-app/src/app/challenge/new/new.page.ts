@@ -37,7 +37,8 @@ export class NewChallengePage implements OnInit {
     this.navCtrl.navigateBack('/home');
   }
 
-  async createChallenge() {
+  async createChallenge() { 
+    // instead of passing the artist, pass the artist ID when the chosen orb is STAN
     try {
       this.challenge = await this.challengeService.createChallenge(
         this.challengeType,

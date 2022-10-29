@@ -22,10 +22,7 @@ export class StanOrbCalculator implements OrbCalculatorInterface {
 				album: track.album.name,
 				albumImageUrl: track.album.images[0].url,
 				timestamp: new Date(trackInfo.playedAt).getTime(),
-				points: this.calculateStanPoints(
-					track.artists[0].id,
-					track.duration_ms
-				),
+				points: track.artists[0].id == this.artist ? Math.trunc(track.duration_ms / 1000) : 0,
 				playedAt: trackInfo.playedAt
 			};
 
@@ -34,10 +31,5 @@ export class StanOrbCalculator implements OrbCalculatorInterface {
 			orb.points += challengeSong.points;
 		}
 		return orb;
-	}
-	
-	calculateStanPoints(artist: string, trackDuration: number): number {
-		if (artist === this.artist) return Math.trunc(trackDuration / 1000);
-		return 0;
 	}
 }
