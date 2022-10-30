@@ -51,7 +51,6 @@ export default class ChallengeControl {
 	}
 
 	async createChallenge<T>(challenge: T): Promise<any> {
-
 		const id = v4();
 
 		const challengeCreated = await this.challengeCollection.createChallenge(
@@ -60,7 +59,7 @@ export default class ChallengeControl {
 				id
 			} as unknown as Challenge
 		);
-		
+
 		if (challengeCreated) {
 			return {
 				data: {
@@ -158,7 +157,8 @@ export default class ChallengeControl {
 							})
 						),
 						points: points + trackOrb.points,
-						name: name
+						name: name,
+						pictureUrl: challenge.challengeData[userId].pictureUrl
 					}
 				},
 				lastUpdated: updateAt

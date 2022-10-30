@@ -22,10 +22,7 @@
       <div class="bar-chart" *ngIf="challengeParticipants.length">
         <ion-item *ngFor="let user of challengeParticipants">
           <ion-avatar slot="start">
-            <img
-              alt="Silhouette of a person's head"
-              src="user.pictureUrl"
-            />
+            <img alt="Silhouette of a person's head" [src]="user.pictureUrl" />
           </ion-avatar>
 
           <ion-label
