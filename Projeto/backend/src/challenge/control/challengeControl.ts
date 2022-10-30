@@ -138,15 +138,14 @@ export default class ChallengeControl {
 			if (challenge.type === ChallengeType.Stan)
 				this.stanArtist = challenge.artist;
 
-
 			const listenedSong = challenge.challengeData[userId].listenedSongs;
 			const points = challenge.challengeData[userId].points;
 			const name = challenge.challengeData[userId].name;
 
-			const trackOrb = this.mapOrbTypes.get(challenge.type)(tracksInfo
-				.filter((song) => {
+			const trackOrb = this.mapOrbTypes.get(challenge.type)(
+				tracksInfo.filter((song) => {
 					return !listenedSong.find((listened) => {
-						return listened.playedAt == song.track.played_at;
+						return listened.playedAt == song.playedAt;
 					});
 				})
 			);
