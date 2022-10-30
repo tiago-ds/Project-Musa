@@ -88,6 +88,12 @@ export default class ChallengeControl {
 			};
 		}
 
+		if (challenge.finishingTime >= new Date().getTime()) {
+			return {
+				data: challenge,
+				statusCode: 200
+			};
+		}
 		for (const userId of Object.keys(challenge.challengeData)) {
 			let userCredentials =
 				await this.credentialsCollection.getCredentials(userId);
