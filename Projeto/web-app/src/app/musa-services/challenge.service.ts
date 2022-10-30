@@ -38,6 +38,7 @@ export class ChallengeService {
               name: user.display_name,
               points: 0,
               listenedSongs: [],
+              pictureUrl: user.images[0].url
             },
           },
         })

@@ -49,6 +49,7 @@ export class ViewChallengePage implements OnInit {
 
       try {
         this.challenge = await this.challengeService.viewChallenge(params.id);
+        console.log(this.challenge)
         let totalPoints = 0;
 
         Object.keys(this.challenge.challengeData).forEach((userId) => {
@@ -58,10 +59,12 @@ export class ViewChallengePage implements OnInit {
         Object.keys(this.challenge.challengeData).forEach((userId) => {
           const name = this.challenge.challengeData[userId].name;
           const points = this.challenge.challengeData[userId].points;
+          const pictureUrl = this.challenge.challengeData[userId].pictureUrl;
           const percentage = {
             name,
             points,
             percentage: (points / totalPoints) * 100,
+            pictureUrl
           };
           this.challengeParticipants.push(percentage);
         });

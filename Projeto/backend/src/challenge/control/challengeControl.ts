@@ -51,7 +51,6 @@ export default class ChallengeControl {
 	}
 
 	async createChallenge<T>(challenge: T): Promise<any> {
-		console.log(challenge);
 
 		const id = v4();
 
@@ -61,7 +60,7 @@ export default class ChallengeControl {
 				id
 			} as unknown as Challenge
 		);
-
+		
 		if (challengeCreated) {
 			return {
 				data: {
