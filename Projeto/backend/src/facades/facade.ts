@@ -74,11 +74,12 @@ export class Facade {
 		return await this.userControl.getMe(access_token);
 	}
 
-	async joinChallenge(challengeId: string, userId: string, userName: string) {
+	async joinChallenge(challengeId: string, userId: string, userName: string, pictureUrl: string ) {
 		return await this.challengeControl.joinChallenge(
 			challengeId,
 			userId,
-			userName
+			userName,
+			pictureUrl
 		);
 	}
 }

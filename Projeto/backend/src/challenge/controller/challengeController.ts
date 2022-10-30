@@ -43,11 +43,13 @@ export default class ChallengeController {
 		const challengeId: string = req.params.id;
 		const userId: string = req.body.user.id;
 		const userName: string = req.body.user.display_name;
+		const pictureUrl: string = req.body.user.images[0].url;
 
 		const response = await this.facade.joinChallenge(
 			challengeId,
 			userId,
-			userName
+			userName,
+			pictureUrl
 		);
 
 		res.status(response.statusCode).json(response.data);

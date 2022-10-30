@@ -183,7 +183,8 @@ export default class ChallengeControl {
 	async joinChallenge(
 		challengeId: string,
 		userId: string,
-		userName: string
+		userName: string,
+		pictureUrl: string
 	): Promise<MusaResponse<Challenge>> {
 		let challenge: Challenge = await this.challengeCollection.getChallenge(
 			challengeId
@@ -206,7 +207,8 @@ export default class ChallengeControl {
 					[userId]: {
 						listenedSongs: [],
 						name: userName,
-						points: 0
+						points: 0,
+						pictureUrl
 					}
 				}
 			};
