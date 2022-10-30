@@ -1,26 +1,37 @@
 <ion-content class="blur-bg" [fullscreen]="true">
   <ng-container *ngIf="challenge && challenge.startingTimestamp">
     <div
-      class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 flex flex-col justify-between"
+      class="max-w-7xl mx-auto px-4 pt-12 sm:px-6 lg:py-16 lg:px-8 flex flex-col justify-between"
     >
       <button class="uppercase text-sm text-left opacity-70" (click)="goBack()">
         <ion-icon name="chevron-back-outline" class="-mb-0.5"></ion-icon> Voltar
       </button>
-      <span class="block mt-4 font-display uppercase font-bold tracking-widest"
-        >Orbe {{ challengeTypeDisplayName[challenge.type] }}</span
-      >
 
-      <span class="block mt-2"
-        ><h1 class="text-xl font-bold font-display tracking-tight sm:text-4xl">
-          <span>Desafio</span>
-        </h1>
-        {{ startingTimeDisplayName }} • {{ endingTimeDisplayName }}</span
-      >
-      <span class="block mt-2"
-        >ID: <span class="font-bold text-sm">{{ challenge.id }}</span></span
-      >
-      <div class="bar-chart" *ngIf="challengeParticipants.length">
-        <ion-item *ngFor="let user of challengeParticipants">
+      <div class="orb-type">
+        <span
+          class="block mt-4 font-display uppercase font-bold tracking-widest"
+          >Orbe {{ challengeTypeDisplayName[challenge.type] }}</span
+        >
+        <img
+          class="orb-image"
+          alt="Colored orb"
+          [src]="orbImages[challenge.type]"
+        />
+      </div>
+
+      <span class="block mt-2"> Desafio {{ startingTimeDisplayName }} </span>
+      <span class="block mt-2"> {{ endingTimeDisplayName }} </span>
+
+      <span class="block mt-4"
+        ><button ion-button icon-only (click)="copyId()">
+          Copiar ID
+          <ion-icon name="copy-outline"></ion-icon></button
+      ></span>
+
+      <div class="divider"></div>
+      <div class="flex flex-col mt-6" *ngIf="challengeParticipants.length">
+        <h2 class="uppercase font-bold mb-4">PARTICIPANTES</h2>
+        <ion-item *ngFor="let user of challengeParticipants" lines="none">
           <ion-avatar slot="start">
             <img alt="Silhouette of a person's head" [src]="user.pictureUrl" />
           </ion-avatar>
@@ -33,6 +44,7 @@
     </div>
 
     <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+      <div class="divider"></div>
       <h2 class="uppercase font-bold mb-4">Histórico</h2>
       <div class="flex flex-col w-full">
         <ng-container *ngFor="let song of allHistory">

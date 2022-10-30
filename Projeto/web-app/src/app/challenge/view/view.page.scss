@@ -75,3 +75,32 @@ ion-item,
 ion-list {
   --background: transparent;
 }
+
+ion-avatar img {
+  object-fit: cover;
+  height: 36px;
+  width: 36px;
+}
+
+.orb-type {
+  position: relative;
+  min-height: 80px;
+
+  .orb-image {
+    position: absolute;
+    top: -50px;
+    right: 0;
+  }
+}
+
+ion-thumbnail img {
+  height: 80px;
+  width: 80px;
+}
+
+.divider {
+  height: 0;
+  width: 100%;
+  border-bottom: 1px solid #5b30d340;
+  margin: 16px 0;
+}

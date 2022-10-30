@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { ChallengeService } from 'src/app/musa-services/challenge.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -18,6 +19,7 @@ export class ViewChallengePage implements OnInit {
     energetic: 'Energético',
     trendsetter: 'Criador de Tendências',
     challenger: 'Desafiante',
+    stan: 'Stan',
   };
   challengeTimeDisplayName = {
     3600000: '1 hora',
@@ -32,13 +34,29 @@ export class ViewChallengePage implements OnInit {
   startingTimeDisplayName = '';
   endingTimeDisplayName = '';
   allHistory = [];
-  challengeParticipants = [];
+  readonly orbImages = {
+    explorer: './../../../assets/explorer-orb.svg',
+    energetic: './../../../assets/energetic-orb.svg',
+    trendsetter: './../../../assets/explorer-orb.svg',
+    challenger: './../../../assets/explorer-orb.svg',
+    stan: './../../../assets/stan-orb.svg',
+  };
+
+  private _challengeParticipants = [];
 
   constructor(
     private navCtrl: NavController,
     private route: ActivatedRoute,
     private challengeService: ChallengeService
   ) {}
+
+  get challengeParticipants() {
+    return this._challengeParticipants.sort((a, b) => a.points + b.points);
+  }
+
+  set challengeParticipants(value) {
+    this._challengeParticipants = value;
+  }
 
   ngOnInit() {
     this.route.queryParams.subscribe(async (params) => {
@@ -49,7 +67,7 @@ export class ViewChallengePage implements OnInit {
 
       try {
         this.challenge = await this.challengeService.viewChallenge(params.id);
-        console.log(this.challenge)
+        console.log(this.challenge);
         let totalPoints = 0;
 
         Object.keys(this.challenge.challengeData).forEach((userId) => {
@@ -60,13 +78,13 @@ export class ViewChallengePage implements OnInit {
           const name = this.challenge.challengeData[userId].name;
           const points = this.challenge.challengeData[userId].points;
           const pictureUrl = this.challenge.challengeData[userId].pictureUrl;
-          const percentage = {
+          const participant = {
             name,
             points,
             percentage: (points / totalPoints) * 100,
-            pictureUrl
+            pictureUrl,
           };
-          this.challengeParticipants.push(percentage);
+          this._challengeParticipants.push(participant);
         });
 
         if (!this.challenge.startingTimestamp) {
@@ -107,6 +125,10 @@ export class ViewChallengePage implements OnInit {
 
   goBack() {
     this.navCtrl.navigateBack('/home');
+  }
+
+  async copyId() {
+    await navigator.clipboard.writeText(this.challenge.id);
   }
 
   getChallengeUserIds() {
