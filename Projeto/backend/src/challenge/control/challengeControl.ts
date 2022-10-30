@@ -138,11 +138,18 @@ export default class ChallengeControl {
 			if (challenge.type === ChallengeType.Stan)
 				this.stanArtist = challenge.artist;
 
-			const trackOrb = this.mapOrbTypes.get(challenge.type)(tracksInfo);
 
 			const listenedSong = challenge.challengeData[userId].listenedSongs;
 			const points = challenge.challengeData[userId].points;
 			const name = challenge.challengeData[userId].name;
+
+			const trackOrb = this.mapOrbTypes.get(challenge.type)(tracksInfo
+				.filter((song) => {
+					return !listenedSong.find((listened) => {
+						return listened.playedAt == song.track.played_at;
+					});
+				})
+			);
 
 			challenge = {
 				...challenge,
@@ -150,11 +157,7 @@ export default class ChallengeControl {
 					...challenge.challengeData,
 					[userId]: {
 						listenedSongs: listenedSong.concat(
-							trackOrb.challengeSongs.filter((song) => {
-								return !listenedSong.find((listened) => {
-									return listened.timestamp == song.timestamp;
-								});
-							})
+							trackOrb.challengeSongs
 						),
 						points: points + trackOrb.points,
 						name: name,
