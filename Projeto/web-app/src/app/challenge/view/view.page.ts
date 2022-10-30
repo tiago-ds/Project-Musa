@@ -50,8 +50,12 @@ export class ViewChallengePage implements OnInit {
     private challengeService: ChallengeService
   ) {}
 
+  get finished() {
+    return Number(this.challenge.finishingTime) < Date.now();
+  }
+
   get challengeParticipants() {
-    return this._challengeParticipants.sort((a, b) => a.points + b.points);
+    return this._challengeParticipants.sort((a, b) => b.points - a.points);
   }
 
   set challengeParticipants(value) {
@@ -110,7 +114,7 @@ export class ViewChallengePage implements OnInit {
         this.endingTimeDisplayName = `${
           Number(this.challenge.finishingTime) > Date.now()
             ? 'termina em'
-            : 'terminou em'
+            : 'terminou a'
         } ${formatDistance(Date.now(), Number(this.challenge.finishingTime), {
           locale: ptBR,
         })}`;
