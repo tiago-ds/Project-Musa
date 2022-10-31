@@ -6,6 +6,7 @@ import { NavController } from '@ionic/angular';
 import { formatRelative } from 'date-fns';
 import { formatDistance } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-view',
@@ -47,7 +48,8 @@ export class ViewChallengePage implements OnInit {
   constructor(
     private navCtrl: NavController,
     private route: ActivatedRoute,
-    private challengeService: ChallengeService
+    private challengeService: ChallengeService,
+    public toastController: ToastController,
   ) {}
 
   get finished() {
@@ -133,9 +135,18 @@ export class ViewChallengePage implements OnInit {
 
   async copyId() {
     await navigator.clipboard.writeText(this.challenge.id);
+    this.presentToast('ID Copiado.');
   }
 
   getChallengeUserIds() {
     return Object.keys(this.challenge.challengeData);
+  }
+
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000
+    });
+    toast.present();
   }
 }

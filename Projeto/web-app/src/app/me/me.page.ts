@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../musa-services/auth.service';
 import { UserService } from '../musa-services/user.service';
-
+import { ToastController } from '@ionic/angular';
 @Component({
   selector: 'app-me',
   templateUrl: 'me.page.html',
@@ -14,6 +14,7 @@ export class MePage implements OnInit {
   constructor(
     public userService: UserService,
     private authService: AuthService,
+    public toastController: ToastController,
     public router: Router
   ) {}
 
@@ -25,10 +26,19 @@ export class MePage implements OnInit {
 
   async copyId() {
     await navigator.clipboard.writeText(this.userData.id);
+    this.presentToast('ID Copiado.');
   }
 
   logout() {
     this.authService.logout();
     this.router.navigate(['login']);
+  }
+
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message,
+      duration: 2000
+    });
+    toast.present();
   }
 }
