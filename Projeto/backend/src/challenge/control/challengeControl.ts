@@ -88,7 +88,7 @@ export default class ChallengeControl {
 			};
 		}
 
-		if (challenge.finishingTime >= new Date().getTime()) {
+		if (challenge.finishingTime <= new Date().getTime()) {
 			return {
 				data: challenge,
 				statusCode: 200
