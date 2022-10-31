@@ -310,4 +310,17 @@ export default class ChallengeControl {
 	async getAvailableOrbTypes(): Promise<string[]> {
 		return ['Energetic', 'Explorer', 'Stan'];
 	}
+
+	async history(userId: string): Promise<MusaResponse<Challenge[]>> {
+		const results = await this.challengeCollection.getChallengesByUserId(
+			userId
+		);
+
+		if (results) {
+			return {
+				data: results,
+				statusCode: 200
+			};
+		}
+	}
 }

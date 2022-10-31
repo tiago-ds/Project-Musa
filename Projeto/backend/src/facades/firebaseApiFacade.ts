@@ -94,4 +94,11 @@ export class FirebaseApiFacade<T> implements DatabaseCommunicationInterface {
 				.delete()) != null
 		);
 	}
+
+	async getAllById(id: any): Promise<Array<Object>> {
+		const docs = await this.objectRef.get();
+		return docs.docs
+			.map((doc) => doc.data())
+			.filter((doc: any) => doc.challengeData[id] != null);
+	}
 }

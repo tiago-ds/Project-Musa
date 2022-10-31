@@ -27,6 +27,10 @@ export default class ChallengeRoutes implements IRoutes {
 			this.challengeController.joinChallenge(req, res, next)
 		);
 
+		this.app.get(`/${this.baseRoute}/history/:id`, (req, res, next) =>
+			this.challengeController.history(req, res, next)
+		);
+
 		this.app.get(`/${this.baseRoute}/search/:term`, (req, res, next) =>
 			this.challengeController.searchArtist(req, res, next)
 		);

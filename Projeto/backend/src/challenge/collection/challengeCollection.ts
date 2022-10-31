@@ -16,6 +16,12 @@ export default class ChallengeCollection {
 		)) as Challenge;
 	}
 
+	async getChallengesByUserId(userId): Promise<Challenge[]> {
+		return (await this.challengeRepository.getChallengesByUserId(
+			userId
+		)) as Challenge[];
+	}
+
 	async updateChallenge(challenge: Challenge): Promise<boolean> {
 		return await this.challengeRepository.updateChallenge(challenge);
 	}

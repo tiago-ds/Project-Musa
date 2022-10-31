@@ -70,4 +70,16 @@ export default class ChallengeController {
 
 		res.status(response.statusCode).json(response.data);
 	}
+
+	async history(
+		req: Request,
+		res: Response,
+		next: NextFunction
+	): Promise<void> {
+		const userId = req.params.id as string;
+
+		const response = await this.challengeControl.history(userId);
+
+		res.status(response.statusCode).json(response.data);
+	}
 }

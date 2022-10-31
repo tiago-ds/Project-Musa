@@ -26,4 +26,8 @@ export class ChallengeRepositoryFirebase
 	async deleteChallenge(challengeId: string): Promise<boolean> {
 		return this.firebaseApi.delete(challengeId);
 	}
+
+	async getChallengesByUserId(userId: string): Promise<Array<Object>> {
+		return this.firebaseApi.getAllById(userId);
+	}
 }
