@@ -10,7 +10,11 @@
     </h1>
   </div>
 
-  <ion-item *ngFor="let challenge of challenges" lines="none">
+  <ion-item
+    *ngFor="let challenge of challenges"
+    lines="none"
+    href="/challenge/view?id={{challenge.id}}"
+  >
     <ion-thumbnail>
       <img
         class="orb-image"
