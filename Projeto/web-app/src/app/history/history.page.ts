@@ -39,11 +39,17 @@ export class HistoryPage implements OnInit {
 
   async getChallenges() {
     this.myId = await this.userService.getId();
-    this.challenges = await this.challengeService.getChallengesByUserId();
+    this.challenges = (
+      await this.challengeService.getChallengesByUserId()
+    ).sort((a, b) => b.startingTimestamp - a.startingTimestamp);
   }
 
   isWinner(challenge) {
     const winner = { id: '', points: 0 };
+    if (challenge.finishingTime > Date.now()) {
+      return 'Em andamento';
+    }
+
     for (const id in challenge.challengeData) {
       if (Object.prototype.hasOwnProperty.call(challenge.challengeData, id)) {
         const element = challenge.challengeData[id];
