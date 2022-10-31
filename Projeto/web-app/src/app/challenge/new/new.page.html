@@ -160,28 +160,38 @@
 
     <ion-modal (willDismiss)="onModalDismissed()">
       <ng-template>
-        <ion-list
-          lines="none"
-          mode="md"
-          class="rounded-md shadow-lg bg-opacity-80 my-4"
-        >
-          <ion-list-header>
-            <ion-label class="text-2xl py-4 font-display"
-              >Deseja convidar um amigo?</ion-label
-            >
-          </ion-list-header>
-          <ion-item>
-            <ion-label>ID do amigo:</ion-label>
-            <ion-input #id [(ngModel)]="friendId"></ion-input>
-            <ion-button
-              expand="block"
-              color="primary"
-              (click)="sendNotification(id.value)"
-            >
-              Enviar
-            </ion-button>
-          </ion-item>
-        </ion-list>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>Convide seus amigos</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="closeModal()">Fechar</ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content>
+          <ion-list
+            lines="none"
+            mode="md"
+            class="rounded-md shadow-lg bg-opacity-80 my-4"
+          >
+            <ion-list-header>
+              <ion-label class="text-2xl py-4 font-display"
+                >Deseja convidar um amigo?</ion-label
+              >
+            </ion-list-header>
+            <ion-item>
+              <ion-label>ID do amigo:</ion-label>
+              <ion-input #id [(ngModel)]="friendId"></ion-input>
+              <ion-button
+                expand="block"
+                color="primary"
+                (click)="sendNotification(id.value)"
+              >
+                Enviar
+              </ion-button>
+            </ion-item>
+          </ion-list>
+        </ion-content>
       </ng-template>
     </ion-modal>
 

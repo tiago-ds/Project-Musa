@@ -53,6 +53,10 @@ export class NewChallengePage implements OnInit {
     }
   }
 
+  closeModal() {
+    this.modal.dismiss();
+  }
+
   onModalDismissed() {
     this.router.navigateByUrl(`/challenge/view?id=${this.challenge.id}`);
   }
