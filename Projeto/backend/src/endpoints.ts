@@ -10,6 +10,7 @@ import NotificationRoutes from './notification/notificationRoutes';
 dotevn.config();
 
 const allowlist = [
+	'https://musa-d0f4f.web.app',
 	'http://localhost:8100',
 	'https://projeto-de-multimidia.web.app',
 	'https://e7f8-179-238-220-119.sa.ngrok.io'
