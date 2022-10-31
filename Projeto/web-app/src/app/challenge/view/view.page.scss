@@ -104,3 +104,8 @@ ion-thumbnail img {
   border-bottom: 1px solid #5b30d340;
   margin: 16px 0;
 }
+
+.artist-picture {
+  --border-radius: 50%;
+  width: auto;
+}

@@ -73,7 +73,6 @@ export class ViewChallengePage implements OnInit {
 
       try {
         this.challenge = await this.challengeService.viewChallenge(params.id);
-        console.log(this.challenge);
         let totalPoints = 0;
 
         Object.keys(this.challenge.challengeData).forEach((userId) => {
