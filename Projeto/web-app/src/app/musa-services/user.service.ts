@@ -19,6 +19,11 @@ export class UserService {
     this.baseRoute = 'user';
   }
 
+  async getId() {
+    const user = await this.storage.get('user');
+    return user.id;
+  }
+
   async getMe() {
     try {
       const credentials = await this.storage.get('user-credentials');

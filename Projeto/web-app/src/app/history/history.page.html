@@ -1,0 +1,29 @@
+<ion-content class="blur-bg" [fullscreen]="true">
+  <div
+    class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 flex flex-col justify-between"
+  >
+    <button class="uppercase text-sm text-left opacity-70" (click)="goBack()">
+      <ion-icon name="chevron-back-outline" class="-mb-0.5"></ion-icon> Voltar
+    </button>
+    <h1 class="text-3xl mt-4 font-bold font-display tracking-tight sm:text-4xl">
+      <span>Meu histórico</span>
+    </h1>
+  </div>
+
+  <ion-item *ngFor="let challenge of challenges" lines="none">
+    <ion-thumbnail>
+      <img
+        class="orb-image"
+        alt="Colored orb"
+        [src]="orbImages[challenge.type]"
+      />
+    </ion-thumbnail>
+    <ion-label>
+      <h2>Desafio {{ challengeTypeDisplayName[challenge.type] }}</h2>
+      <p>{{ isWinner(challenge) }}</p>
+    </ion-label>
+    <ion-chip>
+      <h3>{{ challenge.challengeData[myId].points }} pontos</h3>
+    </ion-chip>
+  </ion-item>
+</ion-content>

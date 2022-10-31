@@ -38,7 +38,7 @@ export class ChallengeService {
               name: user.display_name,
               points: 0,
               listenedSongs: [],
-              pictureUrl: user.images[0].url
+              pictureUrl: user.images[0].url,
             },
           },
         })
@@ -74,6 +74,14 @@ export class ChallengeService {
           id: user.id,
         },
       })
+      .toPromise()) as Array<any>;
+    return response;
+  }
+
+  async getChallengesByUserId() {
+    const user = await this.storage.get('user');
+    const response = (await this.http
+      .get(`${environment.apiUrl}/challenge/history/${user.id}`)
       .toPromise()) as Array<any>;
     return response;
   }
