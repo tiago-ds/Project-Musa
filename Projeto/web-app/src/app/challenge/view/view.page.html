@@ -13,16 +13,24 @@
           >Orbe {{ challengeTypeDisplayName[challenge.type] }}</span
         >
         <div *ngIf="challenge.type === 'stan'">
-          <span>{{challenge.artist.name}}</span>
-          <ion-thumbnail class="artist-picture" slot="start">
-            <img [alt]="challenge.artist.name" [src]="challenge.artist.pictureUrl" />
-          </ion-thumbnail>
           <img
             class="orb-image"
             alt="Colored orb"
             [src]="orbImages[challenge.type]"
           />
         </div>
+      </div>
+
+      <div class="flex flex-col w-full" *ngIf="challenge.artist">
+        <ion-item lines="none">
+          <ion-thumbnail slot="start">
+            <img
+              [alt]="challenge.artist.name"
+              [src]="challenge.artist.pictureUrl"
+            />
+          </ion-thumbnail>
+          <ion-label>{{ challenge.artist.name }}</ion-label>
+        </ion-item>
       </div>
 
       <span class="block mt-2" *ngIf="!finished">

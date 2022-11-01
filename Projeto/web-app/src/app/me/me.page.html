@@ -20,12 +20,12 @@
       >
         {{ userService.userData.display_name }}
       </h1>
-      <p class="text-base pl-8 font-display font-bold tracking-tight">
+      <div class="text-base pl-8 font-display font-bold tracking-tight">
         ID {{ userService.userData.id }}
         <button ion-button icon-only (click)="copyId()">
           <ion-icon name="copy-outline"></ion-icon>
         </button>
-      </p>
+      </div>
     </div>
   </div>
   <div class="px-4 max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8">
